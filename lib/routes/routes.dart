@@ -1,0 +1,31 @@
+import 'package:get/get.dart';
+import 'package:snookerclub/pages/games/games_page.dart';
+import 'package:snookerclub/pages/home/home_page.dart';
+import 'package:snookerclub/pages/players/players_page.dart';
+import 'package:snookerclub/pages/tables/add_table_page.dart';
+import 'package:snookerclub/pages/tables/tables_page.dart';
+
+class Routes {
+  static List<GetPage> get pages => <GetPage>[
+        GetPage(
+          name: '/home_page',
+          page: () => const HomePage(),
+        ),
+        GetPage(
+          name: '/games_page',
+          page: () => const GamesPage(),
+        ),
+        GetPage(
+          name: '/players_page',
+          page: () => const PlayersPage(),
+        ),
+        GetPage(
+          name: '/tables_page',
+          page: () => const TablesPage(),
+        ),
+        GetPage(
+          name: '/add_table_page',
+          page: () => const AddTablePage(),
+        )
+      ];
+}
