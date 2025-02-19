@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TablesPage extends StatelessWidget {
   const TablesPage({super.key});

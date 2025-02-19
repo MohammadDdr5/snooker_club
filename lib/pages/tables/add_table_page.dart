@@ -49,9 +49,9 @@ class AddTablePage extends StatelessWidget {
               width: Get.width,
               height: 60,
               child: ElevatedButton(
-                style: ButtonStyle(
-                    side: WidgetStatePropertyAll(BorderSide(
-                        color: const Color.fromARGB(255, 5, 131, 234)))),
+                style: const ButtonStyle(
+                    side: WidgetStatePropertyAll(
+                        BorderSide(color: Color.fromARGB(255, 5, 131, 234)))),
                 onPressed: () {},
                 child: const Text('Add Table'),
               ),
