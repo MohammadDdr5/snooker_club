@@ -20,7 +20,10 @@ class TablesPage extends StatelessWidget {
                       return ListTile(
                         title: Text(
                             Get.find<TablesController>().table[index].name!),
-                        onTap: () {},
+                        onTap: () {
+                          var thisindex = index;
+                          Get.toNamed('/single_table');
+                        },
                         subtitle: Text(
                             Get.find<TablesController>().table[index].price!),
                         trailing: Checkbox(
