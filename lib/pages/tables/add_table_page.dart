@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:snookerclub/controller/table_textcontroller.dart';
+import 'package:snookerclub/controller/tables_controller.dart';
+import 'package:snookerclub/models/tables_model.dart';
 
 class AddTablePage extends StatelessWidget {
   const AddTablePage({super.key});
@@ -18,8 +21,10 @@ class AddTablePage extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(15),
               child: TextField(
+                controller: Get.find<TableTextcontroller>().tablename,
                 decoration: InputDecoration(
                   hintText: 'Table Name',
+                  fillColor: Colors.black,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
                       borderSide: const BorderSide(
@@ -35,6 +40,7 @@ class AddTablePage extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(15),
               child: TextField(
+                controller: Get.find<TableTextcontroller>().tableprice,
                 decoration: InputDecoration(
                     hintText: 'Price Per Hour',
                     border: OutlineInputBorder(
@@ -52,7 +58,13 @@ class AddTablePage extends StatelessWidget {
                 style: const ButtonStyle(
                     side: WidgetStatePropertyAll(
                         BorderSide(color: Color.fromARGB(255, 5, 131, 234)))),
-                onPressed: () {},
+                onPressed: () {
+                  Get.find<TablesController>().table.add(TablesModel(
+                      name: Get.find<TableTextcontroller>().tablename!.text,
+                      price: Get.find<TableTextcontroller>().tableprice!.text,
+                      status: true));
+                  Get.back();
+                },
                 child: const Text('Add Table'),
               ),
             )
