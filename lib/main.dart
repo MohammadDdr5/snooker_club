@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:snookerclub/bindings/bindings.dart';
 import 'package:snookerclub/routes/routes.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
