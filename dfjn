@@ -1,0 +1,23 @@
+[33mcommit 5c1f8a38b949ec54420f83d6e800e79a8286aa41[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Mohammad_ddr5 <m.ghorbanzade20@gmail.com>
+Date:   Tue Feb 25 21:22:20 2025 +0330
+
+    Created textstyle.dart file create single table page, created stop watch timer for tables timer
+
+[33mcommit ca8483deddd1248fc42f5a6f0fc20beddcc66358[m
+Author: Mohammad_ddr5 <m.ghorbanzade20@gmail.com>
+Date:   Tue Feb 25 19:16:56 2025 +0330
+
+    single table.dart in tables folder created
+
+[33mcommit 4375892edf138e56b7ef43e28bac34fbbb9514ec[m
+Author: Mohammad_ddr5 <m.ghorbanzade20@gmail.com>
+Date:   Wed Feb 19 19:59:46 2025 +0330
+
+    git ignore file update and some codes
+
+[33mcommit 58d308c6d8d361ebd534bc1c3822caa6c046533f[m
+Author: Mohammad_ddr5 <m.ghorbanzade20@gmail.com>
+Date:   Wed Feb 19 19:37:59 2025 +0330
+
+    Project Created From After I learned Git

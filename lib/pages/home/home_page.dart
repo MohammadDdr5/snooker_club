@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/controller/home_controller.dart';
-import 'package:snookerclub/controller/tables_controller.dart';
 import 'package:snookerclub/pages/games/games_page.dart';
 import 'package:snookerclub/pages/players/players_page.dart';
-import 'package:snookerclub/pages/snooker/snooker_page.dart';
+import 'package:snookerclub/pages/payments/payments_page.dart';
 import 'package:snookerclub/pages/tables/tables_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -49,7 +48,7 @@ class HomePage extends StatelessWidget {
               GamesPage(),
               PlayersPage(),
               TablesPage(),
-              SnookerPage()
+              PaymentsPage()
             ],
           ),
           appBar: AppBar(
