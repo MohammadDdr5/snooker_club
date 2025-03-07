@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/classes/textstyle.dart';
+import 'package:snookerclub/controller/payments_controller.dart';
+import 'package:snookerclub/controller/tables_controller.dart';
+import 'package:snookerclub/models/payments_model.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:snookerclub/main.dart';
 
 class SingleTable extends StatelessWidget {
   const SingleTable({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String indextablename = Get.find<TablesController>()
+        .table[Get.find<TablesController>().index]
+        .name!;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Table'),
+          title: Text(indextablename),
         ),
         body: Container(
           padding: const EdgeInsets.only(
@@ -120,6 +125,7 @@ class Stopwatch extends StatelessWidget {
   }
 
   void bsheettimepricecalculate(int hour, int minute, double price) {
+    TextEditingController losernamefortable = TextEditingController();
     Get.bottomSheet(
       isScrollControlled: true,
       isDismissible: false,
@@ -163,8 +169,9 @@ class Stopwatch extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 10),
                     width: Get.width,
                     height: Get.height * 0.1,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: losernamefortable,
+                      decoration: const InputDecoration(
                           hintText: 'Text',
                           border: OutlineInputBorder(
                               borderRadius:
@@ -172,7 +179,18 @@ class Stopwatch extends StatelessWidget {
                       maxLength: 50,
                     ),
                   ),
-                  ElevatedButton(onPressed: () {}, child: const Text('Enter'))
+                  ElevatedButton(
+                      onPressed: () {
+                        Get.find<PaymentsController>().loserpaymoney.add(
+                            PaymentsModel(
+                                losername: losernamefortable.text,
+                                loserpayprice: '$price',
+                                loserplayedtime:
+                                    '$hour hour and $minute minute',
+                                tablename: ''));
+                        Get.back();
+                      },
+                      child: const Text('Enter'))
                 ],
               )),
         ],

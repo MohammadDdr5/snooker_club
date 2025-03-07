@@ -7,8 +7,6 @@ class TablesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TablesController table = TablesController();
-
     return Scaffold(
       body: Container(
           padding: const EdgeInsets.all(15),
@@ -21,7 +19,7 @@ class TablesPage extends StatelessWidget {
                         title: Text(
                             Get.find<TablesController>().table[index].name!),
                         onTap: () {
-                          var thisindex = index;
+                          Get.find<TablesController>().index = index;
                           Get.toNamed('/single_table');
                         },
                         subtitle: Text(
