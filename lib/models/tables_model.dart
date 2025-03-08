@@ -10,7 +10,7 @@ class TablesModel {
     required this.status,
   });
 
-  Map<String, dynamic> tojson() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'price': price,
@@ -18,7 +18,7 @@ class TablesModel {
     };
   }
 
-  TablesModel.fromjson(Map<String, dynamic> json)
+  TablesModel.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         price = json['price'],
         status = json['status'];

@@ -9,14 +9,14 @@ class TablesController extends GetxController {
   @override
   void onInit() {
     var box = GetStorage();
-    if (box.read('tables') != null) {
-      var list = box.read('tables');
+    if (box.read('table') != null) {
+      var list = box.read('table');
       for (var element in list) {
-        table.add(TablesModel.fromjson(element));
+        table.add(TablesModel.fromJson(element));
       }
     }
 
-    ever(table, (Value) {
+    ever(table, (value) {
       box.write('table', table.toJson());
     });
     super.onInit();
