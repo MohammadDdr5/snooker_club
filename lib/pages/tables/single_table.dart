@@ -4,7 +4,6 @@ import 'package:snookerclub/classes/textstyle.dart';
 import 'package:snookerclub/controller/payments_controller.dart';
 import 'package:snookerclub/controller/tables_controller.dart';
 import 'package:snookerclub/models/payments_model.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class SingleTable extends StatelessWidget {
   const SingleTable({super.key});
@@ -14,6 +13,7 @@ class SingleTable extends StatelessWidget {
     String indextablename = Get.find<TablesController>()
         .table[Get.find<TablesController>().index]
         .name!;
+    DateTime starttime = DateTime.now();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -28,10 +28,10 @@ class SingleTable extends StatelessWidget {
           ),
           margin: const EdgeInsets.all(10),
           child: Column(children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                const Column(
                   children: [
                     Text('table name', style: Textstyles.redtextstyle),
                     Text('price', style: Textstyles.redtextstyle),
@@ -41,87 +41,52 @@ class SingleTable extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    Text('table name', style: Textstyles.blackstyle),
-                    Text('price', style: Textstyles.blackstyle),
-                    Text('status', style: Textstyles.blackstyle),
+                    const Text('table name', style: Textstyles.blackstyle),
+                    const Text('price', style: Textstyles.blackstyle),
+                    const Text('status', style: Textstyles.blackstyle),
+                    ElevatedButton(
+                        onPressed: () {
+                          starttime = DateTime.now();
+                          var starthour = starttime.hour;
+                          var startminute = starttime.minute;
+                          print('$starthour   $startminute');
+                        },
+                        child: const Text('start')),
+                    ElevatedButton(
+                        onPressed: () {
+                          DateTime starttimers =
+                              DateTime.parse("2025-03-08 20:45:07.831216");
+                          DateTime stoptimer = DateTime.now();
+                          var finalstarttime = starttimers.hour.toInt() * 60 +
+                              starttimers.minute.toInt();
+                          var finalstoptime = stoptimer.hour.toInt() * 60 +
+                              stoptimer.minute.toInt();
+                          int calculatedresult = finalstoptime - finalstarttime;
+                          print(calculatedresult);
+                          var min = calculatedresult;
+                          double hour = 0;
+                          if (calculatedresult < 60) {
+                            min = calculatedresult;
+                          } else {
+                            hour = calculatedresult / 60;
+                            min = calculatedresult % (hour.toInt() * 60);
+                          }
+                          print(hour.toInt());
+
+                          print(min);
+                          bsheettimepricecalculate(
+                              hour.toInt(), min.toInt(), 1000);
+                          // print('${stoptimer.hour}  ${stoptimer.minute} ');
+                        },
+                        child: const Text('stop'))
                   ],
                 )
               ],
             ),
-            Stopwatch(),
           ]),
         ),
       ),
     );
-  }
-}
-
-// ignore: must_be_immutable
-class Stopwatch extends StatelessWidget {
-  Stopwatch({super.key});
-  final bool ishoures = true;
-  final StopWatchTimer stopwatchtimer2 = StopWatchTimer();
-  var timeforcalculate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Colors.blue,
-        child: Column(
-          children: [
-            StreamBuilder<int>(
-                stream: stopwatchtimer2.rawTime,
-                initialData: stopwatchtimer2.rawTime.value,
-                builder: (context, snapshot) {
-                  var value = snapshot.data;
-                  var displaytime =
-                      StopWatchTimer.getDisplayTime(value!, hours: ishoures);
-                  timeforcalculate = displaytime;
-                  return Text(displaytime);
-                }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    stopwatchtimer2.onExecute.add(StopWatchExecute.start);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text('Start'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    stopwatchtimer2.onExecute.add(StopWatchExecute.stop);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text('Stop'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    stopwatchtimer2.onExecute.add(StopWatchExecute.reset);
-                    print(timeforcalculate.toString());
-                    String timefortest = '02:30:00:00';
-                    //change up string name to timeforcalculate after finished the test
-                    var hour =
-                        int.parse(timefortest.toString().substring(0, 2));
-                    var minute =
-                        int.parse(timefortest.toString().substring(3, 5));
-                    var price = hour * 70000 + (minute / 60) * 70000;
-
-                    bsheettimepricecalculate(hour, minute, price);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent),
-                  child: const Text('Stop and Calculate'),
-                ),
-              ],
-            ),
-          ],
-        ));
   }
 
   void bsheettimepricecalculate(int hour, int minute, double price) {
@@ -187,7 +152,12 @@ class Stopwatch extends StatelessWidget {
                                 loserpayprice: '$price',
                                 loserplayedtime:
                                     '$hour hour and $minute minute',
-                                tablename: ''));
+                                tablename: Get.find<TablesController>()
+                                    .table[Get.find<TablesController>().index]
+                                    .name!));
+                        print(Get.find<TablesController>()
+                            .table[Get.find<TablesController>().index]
+                            .name!);
                         Get.back();
                       },
                       child: const Text('Enter'))

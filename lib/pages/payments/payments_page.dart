@@ -30,7 +30,7 @@ class PaymentsPage extends StatelessWidget {
                           Text(payment[index].losername!),
                           Text(payment[index].loserpayprice!),
                           Text(payment[index].loserplayedtime!),
-                          Text(Get.find<TablesController>().table[index].name!),
+                          Text(payment[index].tablename!),
                         ],
                       ),
                     )
