@@ -71,63 +71,88 @@ class SingleTable extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent),
-                    onPressed: startbutton == false
-                        ? null
-                        : () {
-                            starttime = DateTime.now();
-                            var starthour = starttime.hour;
-                            var startminute = starttime.minute;
-                            currenttable.time = starthour.toString() +
-                                ':' +
-                                startminute.toString();
-                            Get.find<TablesController>().table[indextable] =
-                                currenttable;
-                            startbutton = false;
-                            print('$starthour   $startminute');
-                          },
-                    child: const Text('َشروع بازی')),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlueAccent),
-                    onPressed: () {
-                      DateTime starttimers =
-                          DateTime.parse("2025-03-08 20:45:07.831216");
-                      DateTime stoptimer = DateTime.now();
-                      var finalstarttime = starttimers.hour.toInt() * 60 +
-                          starttimers.minute.toInt();
-                      var finalstoptime = stoptimer.hour.toInt() * 60 +
-                          stoptimer.minute.toInt();
-                      int calculatedresult = finalstoptime - finalstarttime;
-                      print(calculatedresult);
-                      var min = calculatedresult;
-                      double hour = 0;
-                      if (calculatedresult < 60) {
-                        min = calculatedresult;
-                      } else {
-                        hour = calculatedresult / 60;
-                        min = calculatedresult % (hour.toInt() * 60);
-                      }
-                      print(hour.toInt());
-                      startbutton = true;
-                      print(min);
-                      bsheettimepricecalculate(hour.toInt(), min.toInt(), 1000);
-                      // print('${stoptimer.hour}  ${stoptimer.minute} ');
-                    },
-                    child: const Text('اتمام بازی')),
-                ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-                    onPressed: () {},
-                    child: const Text('باز و بست میز'))
-              ],
-            )
+            Obx(() {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.greenAccent),
+                      onPressed: Get.find<TablesController>()
+                                  .startbuttonenable ==
+                              false
+                          ? null
+                          : () {
+                              starttime = DateTime.now();
+                              var starthour = starttime.hour;
+                              var startminute = starttime.minute;
+                              currenttable.time = starthour.toString() +
+                                  ':' +
+                                  startminute.toString();
+                              Get.find<TablesController>().table[indextable] =
+                                  currenttable;
+                              Get.find<TablesController>()
+                                      .startbuttonenable
+                                      .value =
+                                  !Get.find<TablesController>()
+                                      .startbuttonenable
+                                      .value;
+                              Get.find<TablesController>()
+                                      .stopbuttonenable
+                                      .value =
+                                  !Get.find<TablesController>()
+                                      .stopbuttonenable
+                                      .value;
+
+                              ;
+
+                              print('$starthour   $startminute');
+                            },
+                      child: const Text('َشروع بازی')),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent),
+                      onPressed: Get.find<TablesController>()
+                                  .stopbuttonenable ==
+                              false
+                          ? null
+                          : () {
+                              DateTime starttimers =
+                                  DateTime.parse("2025-03-08 20:45:07.831216");
+                              DateTime stoptimer = DateTime.now();
+                              var finalstarttime =
+                                  starttimers.hour.toInt() * 60 +
+                                      starttimers.minute.toInt();
+                              var finalstoptime = stoptimer.hour.toInt() * 60 +
+                                  stoptimer.minute.toInt();
+                              int calculatedresult =
+                                  finalstoptime - finalstarttime;
+                              print(calculatedresult);
+                              var min = calculatedresult;
+                              double hour = 0;
+                              if (calculatedresult < 60) {
+                                min = calculatedresult;
+                              } else {
+                                hour = calculatedresult / 60;
+                                min = calculatedresult % (hour.toInt() * 60);
+                              }
+                              print(hour.toInt());
+                              startbutton = true;
+                              print(min);
+                              bsheettimepricecalculate(
+                                  hour.toInt(), min.toInt(), 1000);
+                              // print('${stoptimer.hour}  ${stoptimer.minute} ');
+                            },
+                      child: const Text('اتمام بازی')),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber),
+                      onPressed: () {},
+                      child: const Text('باز و بست میز'))
+                ],
+              );
+            })
           ]),
         ),
       ),
@@ -207,6 +232,8 @@ class SingleTable extends StatelessWidget {
                         Get.find<TablesController>()
                             .table[Get.find<TablesController>().index]
                             .time = '';
+                        Get.find<TablesController>().startbuttonenable.value =
+                            true;
                       },
                       child: const Text('Enter'))
                 ],

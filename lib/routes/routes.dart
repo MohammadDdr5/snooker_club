@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:snookerclub/pages/games/games_page.dart';
 import 'package:snookerclub/pages/home/home_page.dart';
+import 'package:snookerclub/pages/players/add_player_page.dart';
 import 'package:snookerclub/pages/players/players_page.dart';
 import 'package:snookerclub/pages/tables/add_table_page.dart';
 import 'package:snookerclub/pages/tables/single_table.dart';
@@ -32,5 +33,9 @@ class Routes {
           name: '/single_table',
           page: () => const SingleTable(),
         ),
+        GetPage(
+          name: '/add_player_page',
+          page: () => const AddPlayerPage(),
+        )
       ];
 }

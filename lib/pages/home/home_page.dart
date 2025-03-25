@@ -25,6 +25,8 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               if (controller.index == 2) {
                 Get.toNamed('/add_table_page');
+              } else if (controller.index == 1) {
+                Get.toNamed('/add_player_page');
               }
             },
             foregroundColor: Colors.white,

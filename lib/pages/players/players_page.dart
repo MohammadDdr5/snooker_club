@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:snookerclub/controller/players_controller.dart';
 
 class PlayersPage extends StatelessWidget {
   const PlayersPage({super.key});
@@ -21,8 +22,8 @@ class TableListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.separated(
+    return Container(child: Obx(() {
+      return ListView.separated(
           itemBuilder: (context, index) {
             return Container(
                 padding: const EdgeInsets.only(top: 20, right: 20, bottom: 20),
@@ -34,16 +35,18 @@ class TableListView extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.card_membership)),
                     ),
-                    const Text('Name'),
-                    Text('phone number'),
-                    Text('group'),
+                    Text(Get.find<PlayersController>().players[index].name!),
+                    Text(Get.find<PlayersController>()
+                        .players[index]
+                        .mobilenumber!),
+                    Text(Get.find<PlayersController>().players[index].group!),
                   ],
                 ));
           },
           separatorBuilder: (context, index) {
             return const Divider();
           },
-          itemCount: 20),
-    );
+          itemCount: Get.find<PlayersController>().players.length);
+    }));
   }
 }

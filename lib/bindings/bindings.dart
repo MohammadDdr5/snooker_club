@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:snookerclub/controller/add_playertextcontroller.dart';
 import 'package:snookerclub/controller/games_controller.dart';
 import 'package:snookerclub/controller/home_controller.dart';
 import 'package:snookerclub/controller/payments_controller.dart';
@@ -13,8 +14,9 @@ class Mybindings extends Bindings {
     //when project finished return them too lazyput
     Get.put(TableTextcontroller());
     Get.lazyPut(() => GamesController());
-    Get.lazyPut(() => PlayersController());
+    Get.put(PlayersController());
     Get.lazyPut(() => HomeController());
     Get.put(PaymentsController());
+    Get.put(AddPlayertextcontroller());
   }
 }
