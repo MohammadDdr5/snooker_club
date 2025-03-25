@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import 'package:snookerclub/bindings/bindings.dart';
 import 'package:snookerclub/routes/routes.dart';
 

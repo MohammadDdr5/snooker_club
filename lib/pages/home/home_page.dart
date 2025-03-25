@@ -1,5 +1,6 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/controller/home_controller.dart';
 import 'package:snookerclub/pages/games/games_page.dart';
@@ -16,8 +17,11 @@ class HomePage extends StatelessWidget {
       return SafeArea(
         child: Scaffold(
           floatingActionButton: FloatingActionButton(
+            elevation: 10,
             heroTag: 'hero',
-            backgroundColor: const Color.fromARGB(255, 181, 13, 13),
+            mini: true,
+            backgroundColor: const Color.fromARGB(255, 13, 66, 181),
+
             onPressed: () {
               if (controller.index == 2) {
                 Get.toNamed('/add_table_page');
@@ -28,20 +32,31 @@ class HomePage extends StatelessWidget {
             //params
           ),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: AnimatedBottomNavigationBar(
-              backgroundColor: Colors.black,
-              icons: const [Icons.abc, Icons.home, Icons.book, Icons.table_bar],
-              activeIndex: controller.index,
-              activeColor: Colors.amber,
-              inactiveColor: Colors.white,
-              gapLocation: GapLocation.center,
-              notchSmoothness: NotchSmoothness.verySmoothEdge,
-              notchMargin: 20,
-              splashColor: Colors.amber,
-              onTap: (index) {
-                controller.changetap(index);
-              }),
+              FloatingActionButtonLocation.miniCenterDocked,
+          bottomNavigationBar: CurvedNavigationBar(
+            backgroundColor: Colors.blueAccent,
+            items: const [
+              CurvedNavigationBarItem(
+                child: Icon(Icons.home_outlined),
+                label: 'خانه',
+              ),
+              CurvedNavigationBarItem(
+                child: Icon(Icons.person_2_outlined),
+                label: 'بازیکنان',
+              ),
+              CurvedNavigationBarItem(
+                child: Icon(Icons.table_restaurant_outlined),
+                label: 'میزها',
+              ),
+              CurvedNavigationBarItem(
+                child: Icon(Icons.payment_outlined),
+                label: 'صورت حساب',
+              ),
+            ],
+            onTap: (index) {
+              controller.changetap(index);
+            },
+          ),
           body: IndexedStack(
             index: controller.index,
             children: const [
