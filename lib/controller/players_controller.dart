@@ -6,6 +6,7 @@ class PlayersController extends GetxController {
   int index = 0;
   final tierList = ['A', 'B', 'C', 'Others'].obs;
   var selected = "A".obs;
+  bool isedittingplayer = false;
 
   RxList<PlayersModel> players = <PlayersModel>[].obs;
   void changetap(int indextap) {

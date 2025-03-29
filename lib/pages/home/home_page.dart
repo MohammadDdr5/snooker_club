@@ -3,6 +3,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/controller/home_controller.dart';
+import 'package:snookerclub/controller/players_controller.dart';
 import 'package:snookerclub/pages/games/games_page.dart';
 import 'package:snookerclub/pages/players/players_page.dart';
 import 'package:snookerclub/pages/payments/payments_page.dart';
@@ -27,6 +28,7 @@ class HomePage extends StatelessWidget {
                 Get.toNamed('/add_table_page');
               } else if (controller.index == 1) {
                 Get.toNamed('/add_player_page');
+                Get.find<PlayersController>().isedittingplayer = false;
               }
             },
             foregroundColor: Colors.white,
@@ -71,7 +73,7 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: const Text('Snooker Club'),
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: const Color.fromARGB(255, 101, 177, 220),
           ),
         ),
       );

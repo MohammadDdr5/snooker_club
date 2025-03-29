@@ -10,6 +10,8 @@ class PaymentsPage extends StatelessWidget {
     var payment = Get.find<PaymentsController>().loserpaymoney;
 
     return Container(
+        padding:
+            const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
         color: const Color.fromARGB(255, 255, 255, 255),
         child: Obx(() {
           return ListView.separated(
