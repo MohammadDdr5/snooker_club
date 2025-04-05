@@ -4,8 +4,8 @@ import 'package:snookerclub/models/payments_model.dart';
 
 class PaymentsController extends GetxController {
   int index = 0;
+  var isInHistory = false.obs;
   RxList<PaymentsModel> loserpaymoney = <PaymentsModel>[].obs;
-
   void changetap(int indextap) {
     index = indextap;
     update();

@@ -93,19 +93,12 @@ class SingleTable extends StatelessWidget {
                               Get.find<TablesController>().table[indextable] =
                                   currenttable;
                               Get.find<TablesController>()
-                                      .startbuttonenable
-                                      .value =
-                                  !Get.find<TablesController>()
-                                      .startbuttonenable
-                                      .value;
-                              Get.find<TablesController>()
-                                      .stopbuttonenable
-                                      .value =
-                                  !Get.find<TablesController>()
-                                      .stopbuttonenable
-                                      .value;
+                                  .startbuttonenable
+                                  .value = false;
 
-                              ;
+                              Get.find<TablesController>()
+                                  .stopbuttonenable
+                                  .value = true;
 
                               print('$starthour   $startminute');
                             },
@@ -218,6 +211,8 @@ class SingleTable extends StatelessWidget {
                       onPressed: () {
                         Get.find<PaymentsController>().loserpaymoney.add(
                             PaymentsModel(
+                                paymentdatetime: DateTime.now().toString(),
+                                ispaid: false,
                                 losername: losernamefortable.text,
                                 loserpayprice: '$price',
                                 loserplayedtime:
@@ -234,6 +229,9 @@ class SingleTable extends StatelessWidget {
                             .time = '';
                         Get.find<TablesController>().startbuttonenable.value =
                             true;
+
+                        Get.find<TablesController>().stopbuttonenable.value =
+                            false;
                       },
                       child: const Text('Enter'))
                 ],

@@ -70,11 +70,6 @@ class HomePage extends StatelessWidget {
               PaymentsPage()
             ],
           ),
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text('Snooker Club'),
-            backgroundColor: const Color.fromARGB(255, 101, 177, 220),
-          ),
         ),
       );
     });

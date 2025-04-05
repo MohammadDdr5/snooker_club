@@ -12,21 +12,22 @@ class AddTablePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CustomAppbar(),
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(5),
                 color: Colors.white,
               ),
               padding: const EdgeInsets.all(15),
               child: TextField(
                 controller: Get.find<TableTextcontroller>().tablename,
                 decoration: InputDecoration(
-                  hintText: 'Table Name',
+                  hintText: 'اسم میز',
                   fillColor: Colors.black,
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
                         color: Colors.yellow,
                       )),
@@ -35,29 +36,28 @@ class AddTablePage extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(5),
                 color: Colors.white,
               ),
               padding: const EdgeInsets.all(15),
               child: TextField(
                 controller: Get.find<TableTextcontroller>().tableprice,
                 decoration: InputDecoration(
-                    hintText: 'Price Per Hour',
+                    hintText: 'قیمت میز بر ساعت',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25))),
+                        borderRadius: BorderRadius.circular(5))),
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 244, 244, 244),
-                  borderRadius: BorderRadius.circular(30)),
               margin: const EdgeInsets.all(15),
               width: Get.width,
               height: 60,
               child: ElevatedButton(
-                style: const ButtonStyle(
-                    side: WidgetStatePropertyAll(
-                        BorderSide(color: Color.fromARGB(255, 5, 131, 234)))),
+                style: ElevatedButton.styleFrom(
+                    side: BorderSide(
+                        style: BorderStyle.solid, color: Colors.yellow),
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.black),
                 onPressed: () {
                   Get.find<TablesController>().table.add(TablesModel(
                       name: Get.find<TableTextcontroller>().tablename!.text,
@@ -65,7 +65,7 @@ class AddTablePage extends StatelessWidget {
                       status: true));
                   Get.back();
                 },
-                child: const Text('Add Table'),
+                child: const Text('افزودن میز'),
               ),
             )
           ],
@@ -90,7 +90,7 @@ class CustomAppbar extends StatelessWidget {
         children: [
           const Expanded(
             child: Text(
-              'Add Table',
+              'افزودن میز',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),

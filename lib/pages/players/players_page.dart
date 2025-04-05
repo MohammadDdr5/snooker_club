@@ -9,10 +9,17 @@ class PlayersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 20),
-      width: Get.width,
-      child: const TableListView(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Snooker Club'),
+        backgroundColor: const Color.fromARGB(255, 101, 177, 220),
+      ),
+      body: Container(
+        padding: const EdgeInsets.only(top: 20),
+        width: Get.width,
+        child: const TableListView(),
+      ),
     );
   }
 }
@@ -41,7 +48,9 @@ class TableListView extends StatelessWidget {
                       motion: const ScrollMotion(),
 
                       // A pane can dismiss the Slidable.
-                      dismissible: DismissiblePane(onDismissed: () {}),
+                      dismissible: DismissiblePane(onDismissed: () {
+                        playerDelete(index);
+                      }),
 
                       // All actions are defined in the children parameter.
                       children: [
