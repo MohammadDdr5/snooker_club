@@ -25,11 +25,11 @@ class PaymentsPage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.all(10),
-              child: SizedBox(
+              child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
+                    Container(
                       width: Get.width * 0.18,
                       child: Text(
                         'loser'.tr,
@@ -37,19 +37,19 @@ class PaymentsPage extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
-                    SizedBox(
+                    Container(
                       width: Get.width * 0.18,
                       child: Text('tablename'.tr,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
-                    SizedBox(
+                    Container(
                       width: Get.width * 0.18,
                       child: Text('date'.tr,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
-                    SizedBox(
+                    Container(
                       width: Get.width * 0.18,
                       child: Text(
                         'price'.tr,
@@ -68,7 +68,7 @@ class PaymentsPage extends StatelessWidget {
                   if (Get.find<PaymentsController>().isInHistory.value ==
                       true) {
                     List<Widget> payments = historynotPaidList();
-                    return SizedBox(
+                    return Container(
                         child: ListView.separated(
                             itemBuilder: (context, index) {
                               return payments[index];
@@ -79,7 +79,7 @@ class PaymentsPage extends StatelessWidget {
                             itemCount: payments.length));
                   } else {
                     List<Widget> payments = historyPaidList();
-                    return SizedBox(
+                    return Container(
                         child: ListView.separated(
                             itemBuilder: (context, index) {
                               return payments[index];
@@ -241,25 +241,25 @@ singlepaidlist(int indexlist) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
+          Container(
             width: Get.width * 0.2,
             child: Text(Get.find<PaymentsController>()
                 .loserpaymoney[indexlist]
                 .losername!),
           ),
-          SizedBox(
+          Container(
             width: Get.width * 0.2,
             child: Text(Get.find<PaymentsController>()
                 .loserpaymoney[indexlist]
                 .tablename!),
           ),
-          SizedBox(
+          Container(
             width: Get.width * 0.2,
             child: Text(Get.find<PaymentsController>()
                 .loserpaymoney[indexlist]
                 .paymentdatetime!),
           ),
-          SizedBox(
+          Container(
             width: Get.width * 0.2,
             child: Text(
               convertpricetocurrency(Get.find<PaymentsController>()
@@ -288,7 +288,7 @@ historynotPaidList() {
 singlenotPaidList(int indexlist) {
   var payment = Get.find<PaymentsController>().loserpaymoney;
   if (Get.find<PaymentsController>().loserpaymoney[indexlist].ispaid == false) {
-    return SizedBox(
+    return Container(
       child: Slidable(
         // Specify a key if the Slidable is dismissible.
         key: const ValueKey(0),
@@ -351,20 +351,20 @@ singlenotPaidList(int indexlist) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                Container(
                   width: Get.width * 0.18,
                   child: Text(
                     payment[indexlist].losername!,
                   ),
                 ),
-                SizedBox(
+                Container(
                     width: Get.width * 0.18,
                     child: Text(payment[indexlist].tablename!)),
-                SizedBox(
+                Container(
                   width: Get.width * 0.18,
                   child: Text(payment[indexlist].paymentdatetime.toString()),
                 ),
-                SizedBox(
+                Container(
                     width: Get.width * 0.18,
                     child: Text(
                         '${convertpricetocurrency(payment[indexlist].loserpayprice!)} تومان'))
