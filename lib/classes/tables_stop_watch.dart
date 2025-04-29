@@ -43,8 +43,7 @@ class _TablesStopWatchState extends State<TablesStopWatch> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
+    return Column(
       children: [
         Row(
           children: [
@@ -62,7 +61,7 @@ class _TablesStopWatchState extends State<TablesStopWatch> {
                 onPressed: () {
                   _mystopwatchtimer.onExecute.add(StopWatchExecute.start);
                 },
-                child: Text('Start')),
+                child: const Text('Start')),
             ElevatedButton(
                 onPressed: () {
                   _mystopwatchtimer.onExecute.add(StopWatchExecute.stop);
@@ -71,6 +70,6 @@ class _TablesStopWatchState extends State<TablesStopWatch> {
           ],
         )
       ],
-    ));
+    );
   }
 }

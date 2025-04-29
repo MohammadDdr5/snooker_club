@@ -7,6 +7,9 @@ class TablesController extends GetxController {
   RxList<TablesModel> table = <TablesModel>[].obs;
   var startbuttonenable = true.obs;
   var stopbuttonenable = false.obs;
+  var closeopenbutton = false.obs;
+  var wholost = ''.obs;
+  var iseditingtable = false.obs;
   @override
   void onInit() {
     var box = GetStorage();

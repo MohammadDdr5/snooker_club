@@ -14,8 +14,8 @@ class AddPlayerPage extends StatelessWidget {
       appBar: AppBar(
           backgroundColor: Colors.lightBlueAccent,
           title: Text(Get.find<PlayersController>().isedittingplayer
-              ? 'صفحه ویرایش بازیکن'
-              : 'صفحه افزودن بازیکن ')),
+              ? 'playereditpage'.tr
+              : 'playeraddpage'.tr)),
       body: Container(
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(10),
@@ -24,16 +24,14 @@ class AddPlayerPage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              decoration: const BoxDecoration(
-                color: Colors.lightBlueAccent,
-              ),
+              decoration: const BoxDecoration(),
               height: 80,
               width: Get.width,
               child: TextField(
                 controller: Get.find<AddPlayertextcontroller>().playername,
                 maxLines: 50,
                 decoration: InputDecoration(
-                    hintText: 'نام بازیکن',
+                    hintText: 'playername'.tr,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -41,9 +39,7 @@ class AddPlayerPage extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              decoration: const BoxDecoration(
-                color: Colors.lightBlueAccent,
-              ),
+              decoration: const BoxDecoration(),
               height: 80,
               width: Get.width,
               child: TextField(
@@ -52,7 +48,7 @@ class AddPlayerPage extends StatelessWidget {
                 maxLines: 50,
                 maxLength: 13,
                 decoration: InputDecoration(
-                    hintText: ' شماره تلفن بازیکن',
+                    hintText: 'playerphonenumber'.tr,
                     counterText: '',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
@@ -61,13 +57,13 @@ class AddPlayerPage extends StatelessWidget {
             ),
             Obx(() => Container(
                 margin: const EdgeInsets.only(bottom: 15),
-                child: Container(
+                child: SizedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Group',
-                        style: TextStyle(
+                      Text(
+                        'group'.tr,
+                        style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       DropdownButton<String>(
@@ -97,7 +93,8 @@ class AddPlayerPage extends StatelessWidget {
               height: 70,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreenAccent),
+                      backgroundColor: Colors.lightBlueAccent,
+                      foregroundColor: Colors.white),
                   onPressed: () {
                     if (Get.find<PlayersController>().isedittingplayer ==
                         false) {
@@ -111,8 +108,11 @@ class AddPlayerPage extends StatelessWidget {
                               .text),
                           group: Get.find<PlayersController>().selected.value));
 
-                      Get.snackbar('افزودن بازیکن  ',
-                          'بازیکن ${Get.find<AddPlayertextcontroller>().playername!.text} به لیست اضافه شد',
+                      Get.snackbar(
+                          'addplayer'.tr,
+                          ' ${Get.find<AddPlayertextcontroller>().playername!.text} '
+                                  'playeraddedtolist'
+                              .tr,
                           barBlur: 60,
                           margin:
                               const EdgeInsets.only(top: 10, left: 5, right: 5),
@@ -139,8 +139,11 @@ class AddPlayerPage extends StatelessWidget {
                               .players[Get.find<PlayersController>().index] =
                           currentplayer;
                       Get.back();
-                      Get.snackbar('ویرایش بازیکن  ',
-                          'بازیکن ${Get.find<AddPlayertextcontroller>().playername!.text} با موفقیت ویرایش شد',
+                      Get.snackbar(
+                          ('editplayer'.tr),
+                          '${Get.find<AddPlayertextcontroller>().playername!.text} '
+                                  "playeredited"
+                              .tr,
                           barBlur: 60,
                           margin:
                               const EdgeInsets.only(top: 10, left: 5, right: 5),
@@ -156,9 +159,9 @@ class AddPlayerPage extends StatelessWidget {
                   },
                   child: Text(
                     Get.find<PlayersController>().isedittingplayer
-                        ? 'ویرایش بازیکن'
-                        : 'افزودن بازیکن',
-                    style: TextStyle(
+                        ? 'editplayer'.tr
+                        : 'addplayer'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),

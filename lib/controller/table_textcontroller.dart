@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 class TableTextcontroller extends GetxController {
   TextEditingController? tablename;
   TextEditingController? tableprice;
-
   @override
   void onInit() {
     tablename = TextEditingController();

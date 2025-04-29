@@ -1,151 +1,137 @@
-//delete listview seprated from this page try it on homepage(games_page)
-//thisngs working good
+import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:snookerclub/classes/myconsts.dart';
 import 'package:snookerclub/controller/payments_controller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:snookerclub/controller/translate_controller.dart';
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var payment = Get.find<PaymentsController>().loserpaymoney;
+    final box = GetStorage();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Players Payment'),
-          ],
-        ),
-        backgroundColor: const Color.fromARGB(255, 101, 177, 220),
-        actions: [
-          PopupMenuButton(
-              itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: const Text('پاک کردن تاریخچه'),
-                      onTap: () => {},
-                    ),
-                    PopupMenuItem(
-                      child: const Text('تاریخچه'),
-                      onTap: () {
-                        Get.find<PaymentsController>().isInHistory.value = true;
-                      },
-                    ),
-                    PopupMenuItem(
-                      child: const Text('پرداخت نشده ها'),
-                      onTap: () {
-                        Get.find<PaymentsController>().isInHistory.value =
-                            false;
-                      },
-                    ),
-                  ])
-        ],
+        title: MyCustomAppbartitle(pagename: 'paymentsbills'.tr),
+        backgroundColor: myAppbarColor,
+        actions: [popUpMenuButton(box)],
       ),
       body: Container(
-          padding:
-              const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
-          color: const Color.fromARGB(255, 255, 255, 255),
-          child: Obx(() {
-            return ListView.separated(
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 227, 86, 76)),
-                    child: Slidable(
-                      // Specify a key if the Slidable is dismissible.
-                      key: const ValueKey(0),
-
-                      // The start action pane is the one at the left or the top side.
-                      startActionPane: ActionPane(
-                        // A motion is a widget used to control how the pane animates.
-                        motion: const ScrollMotion(),
-
-                        // A pane can dismiss the Slidable.
-                        dismissible: DismissiblePane(onDismissed: () {}),
-
-                        // All actions are defined in the children parameter.
-                        children: [
-                          // A SlidableAction can have an icon and/or a label.
-                          SlidableAction(
-                            onPressed: (_) => {paymentDelete(index)},
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: 'حذف ',
-                          ),
-                        ],
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: Get.width * 0.18,
+                      child: Text(
+                        'loser'.tr,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
-
-                      // The end action pane is the one at the right or the bottom side.
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            // An action can be bigger than the others.
-                            flex: 3,
-                            onPressed: (_) {
-                              var currentloserpay =
-                                  Get.find<PaymentsController>()
-                                      .loserpaymoney[index];
-
-                              currentloserpay.ispaid = true;
-                              Get.find<PaymentsController>()
-                                  .loserpaymoney[index] = currentloserpay;
+                    ),
+                    SizedBox(
+                      width: Get.width * 0.18,
+                      child: Text('tablename'.tr,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                    ),
+                    SizedBox(
+                      width: Get.width * 0.18,
+                      child: Text('date'.tr,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                    ),
+                    SizedBox(
+                      width: Get.width * 0.18,
+                      child: Text(
+                        'price'.tr,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Divider(),
+            Container(
+                height: Get.height * 0.65,
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Obx(() {
+                  if (Get.find<PaymentsController>().isInHistory.value ==
+                      true) {
+                    List<Widget> payments = historynotPaidList();
+                    return SizedBox(
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return payments[index];
                             },
-                            backgroundColor:
-                                const Color.fromARGB(255, 234, 246, 61),
-                            foregroundColor: Colors.black,
-                            icon: Icons.edit,
-                            label: 'پرداخت شد',
-                          ),
-                        ],
-                      ),
+                            separatorBuilder: (context, index) {
+                              return const Divider();
+                            },
+                            itemCount: payments.length));
+                  } else {
+                    List<Widget> payments = historyPaidList();
+                    return SizedBox(
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return payments[index];
+                            },
+                            separatorBuilder: (context, index) {
+                              return const Divider();
+                            },
+                            itemCount: payments.length));
+                  }
+                })),
+          ],
+        ),
+      ),
+    );
+  }
 
-                      // The child of the Slidable is what the user sees when the
-                      // component is not dragged.
-                      child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 30, right: 30, bottom: 10),
-                          width: Get.width,
-                          height: 80,
-                          child: InkWell(
-                              onTap: () {},
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(payment[index].losername!),
-                                  Text(payment[index].tablename!),
-                                  Text(payment[index].loserpayprice!),
-                                  Text(ispaidcountclaculatorfalse().toString()),
-                                  Text(ispaidcountclaculatortrue().toString()),
-                                  Text('$index'),
-                                  Text(payment[index].ispaid.toString()),
-                                  Text(notpaiditemlisted().toString()),
-                                  Checkbox(
-                                    value: true,
-                                    onChanged: (onChanged) {},
-                                    activeColor: Colors.blue,
-                                  ),
-                                ],
-                              ))),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(left: 35, right: 35),
-                    child: const Divider(
-                      color: Colors.lightBlueAccent,
-                    ),
-                  );
-                },
-                itemCount: Get.find<PaymentsController>().loserpaymoney.length);
-          })),
+  Container popUpMenuButton(GetStorage box) {
+    return Container(
+      child: PopupMenuButton(
+          offset: const Offset(5, 55),
+          itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text('clearpaymentshistory'.tr),
+                  onTap: () => {},
+                ),
+                PopupMenuItem(
+                  child: Text('paymenthistory'.tr),
+                  onTap: () {
+                    Get.find<PaymentsController>().isInHistory.value = false;
+                  },
+                ),
+                PopupMenuItem(
+                  child: Text('payment'.tr),
+                  onTap: () {
+                    Get.find<PaymentsController>().isInHistory.value = true;
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text('زبان انگلیسی'),
+                  onTap: () {
+                    Get.find<TranslateController>().changelanguage('en');
+                    box.write('language', true);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text('زبان فارسی'),
+                  onTap: () {
+                    box.write('language', false);
+                    Get.find<TranslateController>().changelanguage('fa');
+                  },
+                ),
+              ]),
     );
   }
 }
@@ -186,6 +172,32 @@ ispaidcountclaculatortrue() {
   return count;
 }
 
+//for false calculator of payments
+notpaidcountclaculator() {
+  int count = 0;
+  for (var i = 0;
+      i < Get.find<PaymentsController>().loserpaymoney.length;
+      i++) {
+    if (Get.find<PaymentsController>().loserpaymoney[i].ispaid == false) {
+      count++;
+    }
+  }
+  return count;
+}
+
+//for true calculator of payments
+paidcountclaculator() {
+  int count = 0;
+  for (var i = 0;
+      i < Get.find<PaymentsController>().loserpaymoney.length;
+      i++) {
+    if (Get.find<PaymentsController>().loserpaymoney[i].ispaid == true) {
+      count++;
+    }
+  }
+  return count;
+}
+
 notpaiditemlisted() {
   int lengthitem = Get.find<PaymentsController>().loserpaymoney.length;
   var list = [];
@@ -208,4 +220,183 @@ paiditemlisted() {
   return list;
 }
 
-donothing() {}
+//Making Payment List For Payment History Palyers Not Paid Yet
+historyPaidList() {
+  List<Widget>? widgetlist = List.generate(0, (index) => Container());
+
+  for (var element in paiditemlisted()) {
+    widgetlist.add(singlepaidlist(element));
+  }
+
+  return widgetlist;
+}
+
+singlepaidlist(int indexlist) {
+  if (Get.find<PaymentsController>().loserpaymoney[indexlist].ispaid == true) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.lightGreen.shade300,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: Get.width * 0.2,
+            child: Text(Get.find<PaymentsController>()
+                .loserpaymoney[indexlist]
+                .losername!),
+          ),
+          SizedBox(
+            width: Get.width * 0.2,
+            child: Text(Get.find<PaymentsController>()
+                .loserpaymoney[indexlist]
+                .tablename!),
+          ),
+          SizedBox(
+            width: Get.width * 0.2,
+            child: Text(Get.find<PaymentsController>()
+                .loserpaymoney[indexlist]
+                .paymentdatetime!),
+          ),
+          SizedBox(
+            width: Get.width * 0.2,
+            child: Text(
+              convertpricetocurrency(Get.find<PaymentsController>()
+                  .loserpaymoney[indexlist]
+                  .loserpayprice!),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+//Payment Paid History List
+
+historynotPaidList() {
+  List<Widget> widgetlist = List.generate(0, (index) => Container());
+
+  for (var element in notpaiditemlisted()) {
+    widgetlist.add(singlenotPaidList(element));
+  }
+
+  return widgetlist;
+}
+
+singlenotPaidList(int indexlist) {
+  var payment = Get.find<PaymentsController>().loserpaymoney;
+  if (Get.find<PaymentsController>().loserpaymoney[indexlist].ispaid == false) {
+    return SizedBox(
+      child: Slidable(
+        // Specify a key if the Slidable is dismissible.
+        key: const ValueKey(0),
+
+        // The start action pane is the one at the left or the top side.
+        startActionPane: ActionPane(
+          // A motion is a widget used to control how the pane animates.
+          motion: const ScrollMotion(),
+
+          // A pane can dismiss the Slidable.
+          dismissible: DismissiblePane(onDismissed: () {}),
+
+          // All actions are defined in the children parameter.
+          children: [
+            // A SlidableAction can have an icon and/or a label.
+            SlidableAction(
+              onPressed: (_) => {paymentDelete(indexlist)},
+              backgroundColor: const Color.fromARGB(255, 187, 39, 39),
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'delete'.tr,
+            ),
+          ],
+        ),
+
+        // The end action pane is the one at the right or the bottom side.
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              // An action can be bigger than the others.
+              flex: 3,
+              onPressed: (_) {
+                var currentloserpay =
+                    Get.find<PaymentsController>().loserpaymoney[indexlist];
+
+                currentloserpay.ispaid = true;
+                Get.find<PaymentsController>().loserpaymoney[indexlist] =
+                    currentloserpay;
+              },
+              backgroundColor: const Color.fromARGB(255, 234, 246, 61),
+              foregroundColor: Colors.black,
+              icon: Icons.payment_rounded,
+              label: 'paid'.tr,
+            ),
+          ],
+        ),
+
+        // The child of the Slidable is what the user sees when the
+        // component is not dragged.
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            color: const Color.fromARGB(255, 255, 139, 139),
+            padding:
+                const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 10),
+            width: Get.width,
+            height: Get.height * 0.08,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: Get.width * 0.18,
+                  child: Text(
+                    payment[indexlist].losername!,
+                  ),
+                ),
+                SizedBox(
+                    width: Get.width * 0.18,
+                    child: Text(payment[indexlist].tablename!)),
+                SizedBox(
+                  width: Get.width * 0.18,
+                  child: Text(payment[indexlist].paymentdatetime.toString()),
+                ),
+                SizedBox(
+                    width: Get.width * 0.18,
+                    child: Text(
+                        '${convertpricetocurrency(payment[indexlist].loserpayprice!)} تومان'))
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//convert price to currency price
+convertpricetocurrency(String price) {
+  var pricereverce = '';
+  int counter = 0;
+  for (var i = price.length; i > 0; i--) {
+    pricereverce += price.substring(i - 1, i);
+    counter++;
+    if (counter == price.length) {
+      break;
+    }
+    if (counter == 3) {
+      pricereverce += ',';
+    } else if (counter == 6) {
+      pricereverce += ',';
+    }
+  }
+
+  var finalreversed = '';
+  for (var i = pricereverce.length; i > 0; i--) {
+    finalreversed += pricereverce.substring(i - 1, i);
+  }
+  return finalreversed;
+}

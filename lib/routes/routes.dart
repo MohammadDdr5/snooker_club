@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
-import 'package:snookerclub/pages/games/games_page.dart';
 import 'package:snookerclub/pages/home/home_page.dart';
+import 'package:snookerclub/pages/news/news_page.dart';
 import 'package:snookerclub/pages/players/add_player_page.dart';
 import 'package:snookerclub/pages/players/players_page.dart';
 import 'package:snookerclub/pages/tables/add_table_page.dart';
 import 'package:snookerclub/pages/tables/single_table.dart';
 import 'package:snookerclub/pages/tables/tables_page.dart';
+import 'package:snookerclub/pages/splash/splash_screen.dart';
 
 class Routes {
   static List<GetPage> get pages => <GetPage>[
@@ -15,7 +16,7 @@ class Routes {
         ),
         GetPage(
           name: '/games_page',
-          page: () => const GamesPage(),
+          page: () => NewsPage(),
         ),
         GetPage(
           name: '/players_page',
@@ -36,6 +37,7 @@ class Routes {
         GetPage(
           name: '/add_player_page',
           page: () => const AddPlayerPage(),
-        )
+        ),
+        GetPage(name: '/splash_screen', page: () => const SplashScreen())
       ];
 }
