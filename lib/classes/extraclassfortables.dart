@@ -1,10 +1,12 @@
 //gamepage extra coeds for test
 
+// ignore_for_file: avoid_function_literals_in_foreach_calls, unused_element
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/classes/myconsts.dart';
 import 'package:snookerclub/controller/add_playertextcontroller.dart';
-import 'package:snookerclub/controller/payments_controller.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:snookerclub/controller/players_controller.dart';
 import 'package:snookerclub/controller/tables_controller.dart';
@@ -192,13 +194,7 @@ class TableListView extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 child: IconButton(
-                                    onPressed: () {
-                                      var price = Get.find<PaymentsController>()
-                                          .loserpaymoney[1]
-                                          .loserpayprice;
-
-                                      String jrc = '80000000';
-                                    },
+                                    onPressed: () {},
                                     icon: const Icon(Icons.person_outlined)),
                               ),
                               Text(Get.find<PlayersController>()

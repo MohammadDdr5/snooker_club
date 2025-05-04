@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: box.read('theme') ?? false ? ThemeData.dark() : ThemeData.light(),
       locale: Locale(box.read('language') ?? false ? 'en' : 'fa'),
-      initialRoute: '/splash_screen',
+      initialRoute: '/home_page',
       translations: Translate(),
       initialBinding: Mybindings(),
       getPages: Routes.pages,

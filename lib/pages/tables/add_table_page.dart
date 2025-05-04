@@ -20,32 +20,14 @@ class AddTablePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               padding: const EdgeInsets.all(15),
-              child: TextField(
-                controller: Get.find<TableTextcontroller>().tablename,
-                decoration: InputDecoration(
-                  hintText: 'tablename'.tr,
-                  fillColor: Colors.black,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        color: Colors.yellow,
-                      )),
-                ),
-              ),
+              child: const AddTableNameText(),
             ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
               ),
               padding: const EdgeInsets.all(15),
-              child: TextField(
-                controller: Get.find<TableTextcontroller>().tableprice,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    hintText: 'tablepriceperhour'.tr,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5))),
-              ),
+              child: const AddTablePriceText(),
             ),
             Container(
               margin: const EdgeInsets.all(15),
@@ -58,45 +40,64 @@ class AddTablePage extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.black),
                 onPressed: () {
-                  if (Get.find<TablesController>().iseditingtable.value ==
-                      false) {
-                    Get.find<TablesController>().table.add(TablesModel(
-                          playerone: 'p1',
-                          playertwo: 'p2',
-                          name: Get.find<TableTextcontroller>().tablename!.text,
-                          price:
-                              Get.find<TableTextcontroller>().tableprice!.text,
-                          status: true,
-                          time: "",
-                        ));
-
-                    Get.find<TableTextcontroller>().tablename!.text = '';
-                    Get.find<TableTextcontroller>().tableprice!.text = '';
-                    Get.back();
-                    Get.snackbar('addtable'.tr, 'tableadedsuccfullyess'.tr,
-                        margin:
-                            const EdgeInsets.only(top: 20, left: 20, right: 20),
-                        duration: const Duration(seconds: 5),
-                        backgroundColor: Colors.green.shade200);
+                  var controller = Get.find<TableTextcontroller>();
+                  controller.nameValidate.value =
+                      controller.tablename!.value.text.trim().isEmpty;
+                  controller.priceValidate.value =
+                      controller.tableprice!.value.text.trim().isEmpty;
+                  if (controller.nameValidate.value ||
+                      controller.priceValidate.value) {
                   } else {
-                    int indextble = Get.find<TablesController>().index;
-                    var currenttable =
-                        Get.find<TablesController>().table[indextble];
-                    currenttable.name =
-                        Get.find<TableTextcontroller>().tablename!.text;
-                    currenttable.price =
-                        Get.find<TableTextcontroller>().tableprice!.text;
-                    Get.find<TablesController>().table[indextble] =
-                        currenttable;
-                    Get.find<TableTextcontroller>().tablename!.text = '';
-                    Get.find<TableTextcontroller>().tableprice!.text = '';
-                    Get.back();
-                    Get.snackbar(currenttable.name.toString(),
-                        'tableeditedsuccfullyess'.tr,
-                        margin:
-                            const EdgeInsets.only(top: 20, left: 20, right: 20),
-                        duration: const Duration(seconds: 5),
-                        backgroundColor: Colors.green.shade200);
+                    if (Get.find<TablesController>().iseditingtable.value ==
+                        false) {
+                      Get.find<TablesController>().table.add(TablesModel(
+                            playerone: 'p1',
+                            playertwo: 'p2',
+                            name:
+                                Get.find<TableTextcontroller>().tablename!.text,
+                            price: Get.find<TableTextcontroller>()
+                                .tableprice!
+                                .text,
+                            status: true,
+                            time: null,
+                          ));
+
+                      Get.find<TableTextcontroller>().tablename!.clear();
+                      Get.find<TableTextcontroller>().tableprice!.clear();
+                      Get.back();
+                      Get.rawSnackbar(
+                          borderRadius: 15,
+                          messageText: Text('tableadedsuccfullyess'.tr),
+                          snackPosition: SnackPosition.TOP,
+                          margin: const EdgeInsets.only(
+                              top: 20, left: 20, right: 20),
+                          duration: const Duration(seconds: 5),
+                          backgroundColor: Colors.green.shade200);
+                    } else {
+                      int indextble = Get.find<TablesController>().index;
+
+                      var currenttable =
+                          Get.find<TablesController>().table[indextble];
+
+                      currenttable.name =
+                          Get.find<TableTextcontroller>().tablename!.text;
+                      currenttable.price =
+                          Get.find<TableTextcontroller>().tableprice!.text;
+                      Get.find<TablesController>().table[indextble] =
+                          currenttable;
+                      Get.find<TableTextcontroller>().tablename!.clear();
+                      Get.find<TableTextcontroller>().tableprice!.clear();
+                      Get.back();
+                      Get.rawSnackbar(
+                          snackPosition: SnackPosition.TOP,
+                          borderRadius: 15,
+                          messageText: Text(currenttable.name.toString() +
+                              'tableeditedsuccfullyess'.tr),
+                          margin: const EdgeInsets.only(
+                              top: 20, left: 20, right: 20),
+                          duration: const Duration(seconds: 5),
+                          backgroundColor: Colors.green.shade200);
+                    }
                   }
                 },
                 child: Text(Get.find<TablesController>().iseditingtable.value
@@ -108,6 +109,55 @@ class AddTablePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class AddTablePriceText extends StatelessWidget {
+  const AddTablePriceText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return TextField(
+        controller: Get.find<TableTextcontroller>().tableprice,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            errorText: Get.find<TableTextcontroller>().priceValidate.value
+                ? 'cantbenull'.tr
+                : null,
+            hintText: 'tablepriceperhour'.tr,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5))),
+      );
+    });
+  }
+}
+
+class AddTableNameText extends StatelessWidget {
+  const AddTableNameText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return TextField(
+        controller: Get.find<TableTextcontroller>().tablename,
+        decoration: InputDecoration(
+          errorText: Get.find<TableTextcontroller>().nameValidate.value
+              ? 'cantbenull'.tr
+              : null,
+          hintText: 'tablename'.tr,
+          fillColor: Colors.black,
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(
+                color: Colors.yellow,
+              )),
+        ),
+      );
+    });
   }
 }
 

@@ -6,7 +6,6 @@ import 'package:snookerclub/pages/players/players_page.dart';
 import 'package:snookerclub/pages/tables/add_table_page.dart';
 import 'package:snookerclub/pages/tables/single_table.dart';
 import 'package:snookerclub/pages/tables/tables_page.dart';
-import 'package:snookerclub/pages/splash/splash_screen.dart';
 
 class Routes {
   static List<GetPage> get pages => <GetPage>[
@@ -38,6 +37,5 @@ class Routes {
           name: '/add_player_page',
           page: () => const AddPlayerPage(),
         ),
-        GetPage(name: '/splash_screen', page: () => const SplashScreen())
       ];
 }

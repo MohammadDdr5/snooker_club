@@ -1,7 +1,10 @@
+// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers, prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/classes/myconsts.dart';
+import 'package:snookerclub/controller/table_textcontroller.dart';
 import 'package:snookerclub/controller/tables_controller.dart';
 
 class TablesPage extends StatelessWidget {
@@ -12,54 +15,63 @@ class TablesPage extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         appBar: AppBar(
-          title: MyCustomAppbartitle(pagename: 'tablespage'.tr),
+          leading: const Icon(Icons.table_restaurant),
+          actions: [languageMenu()],
+          title: MyCustomAppbartitle(pagename: 'tables'.tr),
           backgroundColor: myAppbarColor,
         ),
         body: Container(
           margin: const EdgeInsets.all(10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Center(
+              Container(
+                margin: const EdgeInsets.all(10),
                 child: Container(
-                  height: Get.height * 0.07,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
+                      Container(
                         width: Get.width * 0.18,
                         child: Text(
                           'tablename'.tr,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),
-                      SizedBox(
+                      Container(
                         width: Get.width * 0.18,
                         child: Text('players'.tr,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)),
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
-                      SizedBox(
+                      Container(
                         width: Get.width * 0.18,
+                        child: Text(
+                          'price'.tr,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      Container(
+                        width: Get.width * 0.12,
                         child: Text('tableactive'.tr,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)),
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                     ],
                   ),
                 ),
               ),
               const Divider(),
-              SizedBox(
+              Container(
                   width: Get.width,
                   height: Get.height * 0.71,
                   child: ListView.separated(
                       itemBuilder: (context, index) {
-                        return SizedBox(
+                        return Container(
                           child: Slidable(
                             // Specify a key if the Slidable is dismissible.
-                            key: const ValueKey(0),
+                            key: UniqueKey(),
 
                             // The start action pane is the one at the left or the top side.
                             startActionPane: ActionPane(
@@ -74,7 +86,7 @@ class TablesPage extends StatelessWidget {
                               // All actions are defined in the children parameter.
                               children: [
                                 // A SlidableAction can have an icon and/or a label.
-                                SizedBox(
+                                Container(
                                   child: SlidableAction(
                                     onPressed: (_) => {tableDelete(index)},
                                     backgroundColor: const Color(0xFFFE4A49),
@@ -91,24 +103,32 @@ class TablesPage extends StatelessWidget {
                             endActionPane: ActionPane(
                               motion: const ScrollMotion(),
                               children: [
-                                SlidableAction(
-                                  // An action can be bigger than the others.
-                                  flex: 3,
-                                  onPressed: (_) {
-                                    Get.find<TablesController>()
-                                        .iseditingtable
-                                        .value = true;
-                                    Get.find<TablesController>().index = index;
-                                    Get.toNamed('/add_table_page');
-                                  },
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 234, 246, 61),
-                                  foregroundColor:
-                                      const Color.fromARGB(255, 0, 0, 0),
-                                  icon: Icons.edit,
-                                  label: 'edit'.tr,
-                                  borderRadius: BorderRadius.circular(15),
-                                  spacing: 10,
+                                Container(
+                                  child: SlidableAction(
+                                    // An action can be bigger than the others.
+                                    flex: 3,
+                                    onPressed: (_) {
+                                      var txtctrl =
+                                          Get.find<TableTextcontroller>();
+                                      var tblctrl =
+                                          Get.find<TablesController>();
+                                      tblctrl.iseditingtable.value = true;
+                                      tblctrl.index = index;
+                                      txtctrl.tablename!.text =
+                                          tblctrl.table[index].name!;
+                                      txtctrl.tableprice!.text =
+                                          tblctrl.table[index].price!;
+                                      Get.toNamed('/add_table_page');
+                                    },
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 234, 246, 61),
+                                    foregroundColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
+                                    icon: Icons.edit,
+                                    label: 'edit'.tr,
+                                    borderRadius: BorderRadius.circular(15),
+                                    spacing: 10,
+                                  ),
                                 ),
                               ],
                             ),
@@ -121,7 +141,7 @@ class TablesPage extends StatelessWidget {
                                 if (Get.find<TablesController>()
                                         .table[index]
                                         .time ==
-                                    "") {
+                                    null) {
                                   Get.find<TablesController>()
                                       .startbuttonenable
                                       .value = true;
@@ -151,7 +171,7 @@ class TablesPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    SizedBox(
+                                    Container(
                                       width: Get.width * 0.18,
                                       child: Text(
                                         Get.find<TablesController>()
@@ -159,24 +179,34 @@ class TablesPage extends StatelessWidget {
                                             .name!,
                                       ),
                                     ),
-                                    SizedBox(
+                                    Container(
                                       width: Get.width * 0.18,
                                       child: Text(Get.find<TablesController>()
                                               .table[index]
                                               .playerone! +
-                                          (',') +
+                                          (' , ') +
                                           Get.find<TablesController>()
                                               .table[index]
                                               .playertwo!),
                                     ),
-                                    SizedBox(
-                                        width: Get.width * 0.18,
+                                    Container(
+                                      width: Get.width * 0.18,
+                                      child: Text(
+                                        style: const TextStyle(fontSize: 12),
+                                        Get.find<TablesController>()
+                                                .table[index]
+                                                .price! +
+                                            ' هزار تومان ',
+                                      ),
+                                    ),
+                                    Container(
+                                        width: Get.width * 0.12,
                                         child: Obx(() {
                                           return Checkbox(
                                             value: Get.find<TablesController>()
                                                         .table[index]
                                                         .time ==
-                                                    ""
+                                                    null
                                                 ? false
                                                 : true,
                                             onChanged: (onChanged) {},

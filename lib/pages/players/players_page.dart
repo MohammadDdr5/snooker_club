@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,6 @@ import 'package:snookerclub/classes/myconsts.dart';
 
 import 'package:snookerclub/controller/add_playertextcontroller.dart';
 import 'package:snookerclub/controller/players_controller.dart';
-import 'package:snookerclub/controller/themeandlang_controller.dart';
 
 class PlayersPage extends StatelessWidget {
   const PlayersPage({super.key});
@@ -14,6 +15,8 @@ class PlayersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const Icon(Icons.person),
+        actions: [languageMenu()],
         title: MyCustomAppbartitle(pagename: 'players'.tr),
         backgroundColor: myAppbarColor,
       ),
@@ -21,10 +24,9 @@ class PlayersPage extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.all(10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: Get.height * 0.07,
+              Container(
+                margin: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -33,20 +35,20 @@ class PlayersPage extends StatelessWidget {
                       child: Text(
                         'playername'.tr,
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                     SizedBox(
                       width: Get.width * 0.24,
                       child: Text('playerphonenumber'.tr,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
+                              fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
                     SizedBox(
-                      width: Get.width * 0.10,
+                      width: Get.width * 0.12,
                       child: Text('group'.tr,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
+                              fontWeight: FontWeight.bold, fontSize: 16)),
                     ),
                   ],
                 ),
@@ -78,18 +80,9 @@ class TableListView extends StatelessWidget {
               return Obx(() {
                 return Container(
                   height: Get.height * 0.09,
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color:
-                            Get.find<ThemeandlangController>().isthemedark.value
-                                ? const Color.fromARGB(255, 36, 35, 35)
-                                : const Color.fromARGB(255, 236, 232, 232),
-                        spreadRadius: 2,
-                        blurRadius: 3)
-                  ]),
                   child: Slidable(
                     // Specify a key if the Slidable is dismissible.
-                    key: const ValueKey(0),
+                    key: UniqueKey(),
 
                     // The start action pane is the one at the left or the top side.
                     startActionPane: ActionPane(
@@ -105,13 +98,15 @@ class TableListView extends StatelessWidget {
                       children: [
                         // A SlidableAction can have an icon and/or a label.
 
-                        SlidableAction(
-                          borderRadius: BorderRadius.circular(15),
-                          onPressed: (_) => {playerDelete(index)},
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'delete'.tr,
+                        Container(
+                          child: SlidableAction(
+                            borderRadius: BorderRadius.circular(15),
+                            onPressed: (_) => {playerDelete(index)},
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'delete'.tr,
+                          ),
                         ),
                       ],
                     ),
@@ -139,58 +134,56 @@ class TableListView extends StatelessWidget {
 
                     // The child of the Slidable is what the user sees when the
                     // component is not dragged.
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          top: 15, left: 10, right: 10, bottom: 10),
-                      width: Get.width,
-                      height: 80,
-                      child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  CircleAvatar(
-                                    child: IconButton(
-                                        onPressed: () {},
-                                        icon:
-                                            const Icon(Icons.person_outlined)),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: Get.width * 0.18,
-                                    child: Text(Get.find<PlayersController>()
-                                        .players[index]
-                                        .name!),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: Get.width * 0.24,
-                                child: Text(Get.find<PlayersController>()
-                                    .players[index]
-                                    .mobilenumber!),
-                              ),
-                              SizedBox(
-                                width: Get.width * 0.10,
-                                child: Text(Get.find<PlayersController>()
-                                    .players[index]
-                                    .group!),
-                              ),
-                            ],
-                          )),
+                    child: InkWell(
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            top: 15, left: 10, right: 10, bottom: 10),
+                        width: Get.width,
+                        height: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CircleAvatar(
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.person_outlined)),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
+                                  width: Get.width * 0.18,
+                                  child: Text(Get.find<PlayersController>()
+                                      .players[index]
+                                      .name!),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: Get.width * 0.24,
+                              child: Text(Get.find<PlayersController>()
+                                  .players[index]
+                                  .mobilenumber!),
+                            ),
+                            SizedBox(
+                              width: Get.width * 0.12,
+                              child: Text(Get.find<PlayersController>()
+                                  .players[index]
+                                  .group!),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );
               });
             },
             separatorBuilder: (context, index) {
-              return const Divider();
+              return Container();
             },
             itemCount: Get.find<PlayersController>().players.length);
       })),

@@ -1,8 +1,10 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MyBottonnavbar extends StatelessWidget {
-  const MyBottonnavbar({super.key});
+class MyBottonNavbar extends StatelessWidget {
+  const MyBottonNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {

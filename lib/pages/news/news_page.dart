@@ -1,4 +1,4 @@
-// ignore_for_file: await_only_futures
+// ignore_for_file: await_only_futures, avoid_unnecessary_containers, unused_catch_clause
 
 import 'dart:async';
 import 'dart:io';
@@ -21,6 +21,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 // ignore: must_be_immutable
 class NewsPage extends StatelessWidget {
   List<Article> articles = [];
+
   InAppWebViewController? webViewController;
 
   NewsPage({super.key});
@@ -29,13 +30,12 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [languageMenu()],
           title: MyCustomAppbartitle(pagename: 'news'.tr),
           backgroundColor: myAppbarColor,
           leading: IconButton(
-            onPressed: () {
-              webviewwidget(Get.find<NewsController>().news[1].url!);
-            },
-            icon: const Icon(Icons.shield),
+            onPressed: () {},
+            icon: const Icon(Icons.newspaper_outlined),
           ),
         ),
         body: Obx(() {
@@ -115,7 +115,7 @@ bodyreturn() {
 //dataloading
 dataloading() async {
   bool connection = await _checknetconnection();
-  print(connection.toString());
+
   if (connection) {
     getwebsitedata().then((_) {
       Get.rawSnackbar(
@@ -137,7 +137,10 @@ dataloading() async {
         backgroundColor: Get.find<ThemeandlangController>().isthemedark.value
             ? Colors.black
             : Colors.white,
-        message: 'connectionlost'.tr,
+        messageText: Text(
+          'connectionlost'.tr,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
         icon: const Icon(Icons.wifi_off_rounded),
         isDismissible: false);
   }
@@ -149,7 +152,7 @@ Future getwebsitedata() async {
     if (Get.find<NewsController>().news.isEmpty) {
       final url = Uri.parse('https://metro.co.uk/tag/snooker/');
       final response = await http.get(url);
-      print(response.statusCode);
+
       dom.Document html = dom.Document.html(response.body);
 
       final titles = html
@@ -175,10 +178,6 @@ Future getwebsitedata() async {
           .map((delement) => delement.innerHtml)
           .toList();
 
-      print('count: ${titles.length}');
-      print(newslink.length);
-      print(urlimage.first);
-      print(urlimage.last);
       Get.find<NewsController>().news.clear();
       for (var i = 0; i < titles.length; i++) {
         Get.find<NewsController>().news.add(Article(
@@ -188,7 +187,6 @@ Future getwebsitedata() async {
             date: date[i]));
       }
       Get.find<NewsController>().changeisdone();
-      print(Get.find<NewsController>().news[1].urlimage);
     }
   } catch (e) {
     e.printError();
@@ -197,53 +195,6 @@ Future getwebsitedata() async {
 
 //get website dTA
 //get news bodytesite from the site
-
-Future getwebsitebodydata(int newsindex) async {
-  print(Get.find<NewsController>().news[newsindex].url);
-  try {
-    if (Get.find<NewsController>().news.isNotEmpty) {
-      final url =
-          Uri.parse(Get.find<NewsController>().news[newsindex].url.toString());
-      final response = await http.get(url);
-      dom.Document html = dom.Document.html(response.body);
-
-      final bodytex = html
-          .querySelectorAll('div > div> p ')
-          .map((element) => element.innerHtml.trim())
-          .whereType()
-          .toList();
-
-      print(bodytex.first);
-      final newslink = html
-          .querySelectorAll(
-              'div.latest > div> div > div > div > div.article-card__inner > h3 > a')
-          .map((belement) => belement.attributes['href'])
-          .toList();
-
-      final urlimage = html
-          .querySelectorAll(
-              'div.latest > div > div > div > div > div.article-card__image > a > img')
-          .map((clement) => clement.attributes['src'])
-          .toList();
-
-      final date = html
-          .querySelectorAll(
-              'div.latest > div > div > div> div > div.article-card__inner > div > div > span.article-card__date')
-          .map((delement) => delement.innerHtml)
-          .toList();
-
-      print('count: ${bodytex.length}');
-      print(newslink.length);
-      print(urlimage.first);
-      print(urlimage.last);
-
-      Get.find<NewsController>().changeisdone();
-      print(Get.find<NewsController>().news[1].urlimage);
-    }
-  } catch (e) {
-    e.printError();
-  }
-}
 
 shimmerinterface() {
   return ListView.separated(
@@ -334,6 +285,7 @@ Future<bool> _checknetconnection() async {
 
 //news complete webview
 webviewwidget(String url) async {
+  // ignore: unused_local_variable
   InAppWebViewController? webViewController;
   Get.dialog(
     SizedBox(

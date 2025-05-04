@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/classes/myconsts.dart';
@@ -38,24 +40,37 @@ class SingleTable extends StatelessWidget {
           margin: const EdgeInsets.all(5),
           child: Column(children: [
             Obx(() {
-              return SizedBox(
+              return Container(
                 height: Get.height * 0.2,
+                width: Get.width * 0.9,
                 child: DataTable(
                   columns: showPlayersdetailtable,
                   rows: <DataRow>[
                     DataRow(
                       cells: <DataCell>[
                         DataCell(Obx(() {
-                          return Text(Get.find<TablesController>()
-                              .table[indextable]
-                              .time
-                              .toString());
+                          return Get.find<TablesController>()
+                                      .table[indextable]
+                                      .time ==
+                                  null
+                              ? const Text('')
+                              : Text(Get.find<TablesController>()
+                                  .table[indextable]
+                                  .time
+                                  .toString()
+                                  .substring(11, 19));
                         })),
                         DataCell(
-                            Text(Get.find<TablesController>()
+                            Get.find<TablesController>()
+                                        .table[indextable]
+                                        .playerone !=
+                                    'p1'
+                                ? Text(Get.find<TablesController>()
                                     .table[indextable]
-                                    .playerone ??
-                                ''), onTap: () {
+                                    .playerone!)
+                                : const Center(
+                                    child: Icon(Icons.add_circle_rounded),
+                                  ), onTap: () {
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
@@ -63,10 +78,16 @@ class SingleTable extends StatelessWidget {
                                   ));
                         }),
                         DataCell(
-                            Text(Get.find<TablesController>()
+                            Get.find<TablesController>()
+                                        .table[indextable]
+                                        .playertwo !=
+                                    'p2'
+                                ? Text(Get.find<TablesController>()
                                     .table[indextable]
-                                    .playertwo ??
-                                ''), onTap: () {
+                                    .playertwo!)
+                                : const Center(
+                                    child: Icon(Icons.add_circle_rounded),
+                                  ), onTap: () {
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
@@ -84,7 +105,7 @@ class SingleTable extends StatelessWidget {
                 children: [
                   Container(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         startButton(starttime, currenttable, indextable),
@@ -93,19 +114,21 @@ class SingleTable extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    child: Get.find<TablesController>()
-                                .table[Get.find<TablesController>().index]
-                                .time !=
-                            ""
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            height: Get.height * 0.1,
-                            width: Get.width * 0.9,
-                            child: const Stopwatch(),
-                          )
-                        : Container(),
-                  ),
+                  Obx(() {
+                    return Container(
+                      child: Get.find<TablesController>()
+                                  .table[Get.find<TablesController>().index]
+                                  .time !=
+                              null
+                          ? Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              height: Get.height * 0.1,
+                              width: Get.width * 0.9,
+                              child: const Stopwatch(),
+                            )
+                          : Container(),
+                    );
+                  }),
                 ],
               );
             })
@@ -118,19 +141,19 @@ class SingleTable extends StatelessWidget {
   List<DataColumn> get showPlayersdetailtable {
     return <DataColumn>[
       DataColumn(
-        label: Expanded(
+        label: Center(
             child: Text('starttime'.tr,
-                style: const TextStyle(fontStyle: FontStyle.italic))),
+                style: const TextStyle(fontWeight: FontWeight.bold))),
       ),
       DataColumn(
-        label: Expanded(
+        label: Center(
             child: Text('playerone'.tr,
-                style: const TextStyle(fontStyle: FontStyle.italic))),
+                style: const TextStyle(fontWeight: FontWeight.bold))),
       ),
       DataColumn(
-        label: Expanded(
+        label: Center(
             child: Text('playertwo'.tr,
-                style: const TextStyle(fontStyle: FontStyle.italic))),
+                style: const TextStyle(fontWeight: FontWeight.bold))),
       ),
     ];
   }
@@ -138,26 +161,33 @@ class SingleTable extends StatelessWidget {
   ElevatedButton openCloseButton(int indextable, bool startbutton) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-        onPressed: () {
-          int calculatedresult = endGameCalculator();
-          var min = calculatedresult;
-          double hour = 0;
-          if (calculatedresult < 60) {
-            min = calculatedresult;
-          } else {
-            hour = calculatedresult / 60;
-            min = calculatedresult % (hour.toInt() * 60);
-          }
+        onPressed: Get.find<TablesController>().stopbuttonenable.value == false
+            ? null
+            : () {
+                int calculatedresult = endGameCalculator();
+                var min = calculatedresult;
+                double hour = 0;
+                if (calculatedresult < 60) {
+                  min = calculatedresult;
+                } else {
+                  hour = calculatedresult / 60;
+                  min = calculatedresult % (hour.toInt() * 60);
+                }
 
-          bsheettimepricecalculate(
-              hour.toInt(),
-              min.toInt(),
-              double.parse(
-                  (Get.find<TablesController>().table[indextable].price!)),
-              true);
-          // print('${stoptimer.hour}  ${stoptimer.minute} ');
-        },
-        child: Text('openclose'.tr));
+                bsheettimepricecalculate(
+                    hour.toInt(),
+                    min.toInt(),
+                    double.parse((Get.find<TablesController>()
+                        .table[indextable]
+                        .price!)),
+                    true);
+
+                // print('${stoptimer.hour}  ${stoptimer.minute} ');
+              },
+        child: Text(
+          'openclose'.tr,
+          style: const TextStyle(color: Colors.black),
+        ));
   }
 
   ElevatedButton endButton(int indextable, bool startbutton) {
@@ -177,8 +207,6 @@ class SingleTable extends StatelessWidget {
                   min = calculatedresult % (hour.toInt() * 60);
                 }
 
-                startbutton = true;
-                Get.find<TablesController>().stopbuttonenable.value = false;
                 bsheettimepricecalculate(
                     hour.toInt(),
                     min.toInt(),
@@ -188,22 +216,30 @@ class SingleTable extends StatelessWidget {
                     false);
                 // print('${stoptimer.hour}  ${stoptimer.minute} ');
               },
-        child: Text('endgame'.tr));
+        child: Text(
+          'endgame'.tr,
+          style: const TextStyle(color: Colors.black),
+        ));
   }
 
   ElevatedButton startButton(
       DateTime starttime, TablesModel currenttable, int indextable) {
     return ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.greenAccent,
+        ),
         onPressed: Get.find<TablesController>().startbuttonenable.value == false
             ? null
             : () {
-                currenttable.time = startTimeFillCal();
+                currenttable.time = DateTime.now().toString();
                 Get.find<TablesController>().table[indextable] = currenttable;
                 Get.find<TablesController>().startbuttonenable.value = false;
                 Get.find<TablesController>().stopbuttonenable.value = true;
               },
-        child: Text('startgame'.tr));
+        child: Text(
+          'startgame'.tr,
+          style: const TextStyle(color: Colors.black),
+        ));
   }
 
   void bsheettimepricecalculate(
@@ -314,25 +350,29 @@ class SingleTable extends StatelessWidget {
               if (isopencloseclicked) {
                 int indextbl = Get.find<TablesController>().index;
                 var currenttable = Get.find<TablesController>().table[indextbl];
-                currenttable.time = startTimeFillCal();
+                currenttable.time = DateTime.now().toString();
                 Get.find<TablesController>().table[indextbl] = currenttable;
 
                 Get.back();
-                Get.snackbar('payment'.tr, 'endgametablemassage'.tr,
+                Get.rawSnackbar(
+                    message: 'endgametablemassage'.tr,
                     margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                     duration: const Duration(seconds: 5),
-                    backgroundColor: Colors.green.shade200);
+                    snackPosition: SnackPosition.TOP,
+                    borderRadius: 20);
+
+                Get.find<TablesController>().stopbuttonenable.value = true;
               } else {
                 Get.find<TablesController>()
                     .table[Get.find<TablesController>().index]
-                    .time = '';
+                    .time = null;
                 Get.find<TablesController>().startbuttonenable.value = true;
 
                 Get.find<TablesController>().stopbuttonenable.value = false;
                 Get.find<TablesController>().closeopenbutton.value = false;
                 Get.find<TablesController>()
                     .table[Get.find<TablesController>().index]
-                    .time = '';
+                    .time = null;
                 Get.find<TablesController>().wholost.value = '';
                 Get.find<TablesController>()
                     .table[Get.find<TablesController>().index]
@@ -341,10 +381,25 @@ class SingleTable extends StatelessWidget {
                     .table[Get.find<TablesController>().index]
                     .playertwo = 'p2';
                 Get.back();
-                Get.snackbar('payment'.tr, 'endgametablemassage'.tr,
-                    margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    duration: const Duration(seconds: 5),
-                    backgroundColor: Colors.green.shade200);
+                Get.rawSnackbar(
+                  snackStyle: SnackStyle.FLOATING,
+                  messageText: Container(
+                      padding: const EdgeInsets.only(left: 100, right: 100),
+                      child: Text(
+                        'endgametablemassage'.tr,
+                        style: const TextStyle(color: Colors.white),
+                      )),
+                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                  duration: const Duration(seconds: 5),
+                  snackPosition: SnackPosition.TOP,
+                  borderRadius: 20,
+                );
+                var tblctrl = Get.find<TablesController>();
+                tblctrl.startbuttonenable.value = true;
+                tblctrl.stopbuttonenable.value = false;
+                var thistable = tblctrl.table[tblctrl.index];
+                thistable.time = null;
+                tblctrl.table[tblctrl.index] = thistable;
               }
             },
             child: Text(
@@ -367,6 +422,7 @@ class Stopwatch extends StatefulWidget {
 class _StopwatchState extends State<Stopwatch> {
   final StopWatchTimer _stopwatchtimer = StopWatchTimer();
   final ishoures = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -379,32 +435,21 @@ class _StopwatchState extends State<Stopwatch> {
             stream: _stopwatchtimer.rawTime,
             initialData: _stopwatchtimer.rawTime.value,
             builder: (context, snapshot) {
-              var tablestarttime = Get.find<TablesController>()
+              var tabletimetodate = Get.find<TablesController>()
                   .table[Get.find<TablesController>().index]
                   .time;
-              var starttimer = 0;
-              if (tablestarttime!.substring(0, 2) == '00') {
-                starttimer = (int.parse(
-                    tablestarttime.substring(3, tablestarttime.length)));
-              } else {
-                starttimer = (int.parse((tablestarttime.substring(0, 2)))) *
-                        60 +
-                    (int.parse(
-                        tablestarttime.substring(3, tablestarttime.length)));
-              }
 
-              print(starttimer);
-              var currenttime =
-                  (DateTime.now().hour * 60) + DateTime.now().minute;
-              var ultimatetime = (currenttime - starttimer);
+              var timerdiffrence =
+                  DateTime.now().difference(DateTime.parse(tabletimetodate!));
 
-              var value = snapshot.data! +
-                  StopWatchTimer.getMilliSecFromMinute(ultimatetime);
+              var value = StopWatchTimer.getMilliSecFromSecond(
+                  timerdiffrence.inSeconds);
 
               var displaytime =
                   StopWatchTimer.getDisplayTime(value, hours: ishoures);
+
               _stopwatchtimer.onExecute.add(StopWatchExecute.start);
-              return Text(displaytime.toString().substring(0, 8),
+              return Text(displaytime.toString(),
                   style: const TextStyle(
                       fontSize: 35, fontWeight: FontWeight.bold));
             }));
@@ -523,21 +568,23 @@ Widget chipForRow(String label, Color color) {
 endGameCalculator() {
   var starttimehour = 0;
   var stoptimerhour = 0;
-  String starttimer = Get.find<TablesController>()
+  var starttimer = Get.find<TablesController>()
       .table[Get.find<TablesController>().index]
-      .time!;
+      .time
+      .toString();
   DateTime stoptimer = DateTime.now();
-  if (starttimer.substring(0, 2) != '00') {
-    starttimehour = int.parse(starttimer.substring(0, 2)) * 60;
+  if (starttimer.substring(11, 13) != '00') {
+    starttimehour = int.parse(starttimer.substring(11, 13)) * 60;
   } else {
-    starttimehour = int.parse(starttimer.substring(0, 2));
+    starttimehour = int.parse(starttimer.substring(11, 13));
   }
   if (stoptimer.hour != 0) {
     stoptimerhour = stoptimer.hour * 60;
   }
 
-  var starttimerfinal = starttimehour + int.parse(starttimer.substring(3, 5));
+  var starttimerfinal = starttimehour + int.parse(starttimer.substring(14, 16));
   var stoptimerfinal = stoptimerhour + stoptimer.minute;
+  // ignore: unused_local_variable
   int calculatedresult = 0;
   if (starttimerfinal > stoptimerfinal) {
     return calculatedresult = (24 * 60) - starttimerfinal + stoptimerfinal;
