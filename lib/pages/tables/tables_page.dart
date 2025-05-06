@@ -192,12 +192,9 @@ class TablesPage extends StatelessWidget {
                                     Container(
                                       width: Get.width * 0.18,
                                       child: Text(
-                                        style: const TextStyle(fontSize: 12),
-                                        Get.find<TablesController>()
-                                                .table[index]
-                                                .price! +
-                                            ' هزار تومان ',
-                                      ),
+                                          style: const TextStyle(fontSize: 12),
+                                          '${convertpricetocurrency(Get.find<TablesController>().table[index].price!)} ' +
+                                              'moneycurrency'.tr),
                                     ),
                                     Container(
                                         width: Get.width * 0.12,

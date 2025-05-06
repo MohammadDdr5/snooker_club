@@ -6,11 +6,14 @@ var box = GetStorage();
 class ThemeandlangController extends GetxController {
   var isthemedark = box.read('theme') ?? false ? true.obs : false.obs;
   var islanuageenglish = false.obs;
+
   void themechanger() {
     isthemedark.value = !isthemedark.value;
+    update();
   }
 
   void languagechange() {
     islanuageenglish.value = !islanuageenglish.value;
+    update();
   }
 }

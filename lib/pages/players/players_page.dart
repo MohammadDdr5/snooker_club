@@ -20,7 +20,7 @@ class PlayersPage extends StatelessWidget {
         title: MyCustomAppbartitle(pagename: 'players'.tr),
         backgroundColor: myAppbarColor,
       ),
-      body: SizedBox(
+      body: Container(
         child: Container(
           margin: const EdgeInsets.all(10),
           child: Column(

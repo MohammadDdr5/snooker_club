@@ -4,6 +4,7 @@ import 'package:snookerclub/models/players_model.dart';
 
 class PlayersController extends GetxController {
   int index = 0;
+
   final tierList = ['A', 'B', 'C', 'Others'].obs;
   var selected = "A".obs;
   bool isedittingplayer = false;

@@ -121,6 +121,7 @@ class AddTablePriceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextField(
+        maxLength: 20,
         controller: Get.find<TableTextcontroller>().tableprice,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
@@ -143,6 +144,7 @@ class AddTableNameText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextField(
+        maxLength: 20,
         controller: Get.find<TableTextcontroller>().tablename,
         decoration: InputDecoration(
           errorText: Get.find<TableTextcontroller>().nameValidate.value

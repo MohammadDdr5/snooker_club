@@ -122,3 +122,26 @@ Container languageMenu() {
             ]),
   );
 }
+
+convertpricetocurrency(String price) {
+  var pricereverce = '';
+  int counter = 0;
+  for (var i = price.length; i > 0; i--) {
+    pricereverce += price.substring(i - 1, i);
+    counter++;
+    if (counter == price.length) {
+      break;
+    }
+    if (counter == 3) {
+      pricereverce += ',';
+    } else if (counter == 6) {
+      pricereverce += ',';
+    }
+  }
+
+  var finalreversed = '';
+  for (var i = pricereverce.length; i > 0; i--) {
+    finalreversed += pricereverce.substring(i - 1, i);
+  }
+  return finalreversed;
+}

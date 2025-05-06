@@ -47,6 +47,8 @@ class Translate extends Translations {
           'loser': 'Loser',
           'date': 'Date',
           'price': 'Price',
+          'hour': 'Hour(s)',
+          'minute': 'Minute(s)',
           'presstwicetoexit': 'Press Back Again To Exit',
           'connecttionlost': 'Please Check Your Network Connection !!',
           'newslistupdate': 'News List Updated !!',
@@ -56,6 +58,8 @@ class Translate extends Translations {
           'cantbenull': 'Cant Be Empty',
           'areyousuretodelete':
               'Are You Sure About to Remove All Payments List !!? This Action Cant be Undo !!!!',
+          'selectone': 'Please Select Loser',
+          'moneycurrency': 'Dollar(s)',
         },
         'fa': {
           'home': 'خانه',
@@ -95,11 +99,13 @@ class Translate extends Translations {
           'nightmode': 'حالت شب',
           'tableadedsuccfullyess': ' به لیست میزها اضافه شد',
           'tableeditedsuccfullyess': ' با موفقیت ویرایش شد ',
-          'endgametablemassage': 'به لیست پرداختی اضافه شد',
+          'endgametablemassage': 'به لیست صورتحساب ها اضافه شد',
           'tableactive': 'فعال',
           'loser': 'بازنده',
           'date': 'تاریخ',
           'price': 'قیمت',
+          'hour': 'ساعت',
+          'minute': 'دقیقه',
           'presstwicetoexit': 'برای خروج دوباره برگشت را بزنید',
           'connecttionlost': 'خطای اتصال به شبکه ',
           'newslistupdate': 'لیست اخبار بروز شد !!',
@@ -109,6 +115,8 @@ class Translate extends Translations {
           'cantbenull': 'نمیتواند خالی باشد',
           'areyousuretodelete':
               'آیا از حذف لیست تمامی پرداختی ها مطمِن هستید !!؟؟ پس از حذف اطلاعات قابل بازگشت نیستند !!',
+          'selectone': 'لطفا بازنده را مشخص کنید',
+          'moneycurrency': 'تومان',
         }
       };
 }

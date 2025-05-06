@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snookerclub/classes/myconsts.dart';
 import 'package:snookerclub/controller/payments_controller.dart';
+
 import 'package:snookerclub/controller/tables_controller.dart';
 import 'package:snookerclub/controller/tblsubplayerstxtcntrlr.dart';
 import 'package:snookerclub/controller/themeandlang_controller.dart';
@@ -231,10 +232,12 @@ class SingleTable extends StatelessWidget {
         onPressed: Get.find<TablesController>().startbuttonenable.value == false
             ? null
             : () {
+                var tblctrler = Get.find<TablesController>();
                 currenttable.time = DateTime.now().toString();
-                Get.find<TablesController>().table[indextable] = currenttable;
-                Get.find<TablesController>().startbuttonenable.value = false;
-                Get.find<TablesController>().stopbuttonenable.value = true;
+                tblctrler.table[indextable] = currenttable;
+                tblctrler.startbuttonenable.value = false;
+                tblctrler.stopbuttonenable.value = true;
+                tblctrler.wholost.value = '';
               },
         child: Text(
           'startgame'.tr,
@@ -272,7 +275,7 @@ class SingleTable extends StatelessWidget {
                 children: [
                   timeandPriceShow(hour, minute, price),
                   playersloserselected(losernamefortable),
-                  enterButton(losernamefortable, price, hour, minute,
+                  createpaymentButton(losernamefortable, price, hour, minute,
                       isopenclosebutton),
                 ],
               )),
@@ -282,11 +285,15 @@ class SingleTable extends StatelessWidget {
   }
 
   Row timeandPriceShow(int hour, int minute, double price) {
+    double calculatedprice = hour * (price) + (minute / 60) * (price);
+    var finalprice = convertpricetocurrency(calculatedprice.round().toString());
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(' Hour $hour, $minute minute , price $price'),
+        Text(' $hour  ${'hour'.tr}'),
+        Text(' $minute  ${'minute'.tr}'),
+        Text('${'price'.tr} : $finalprice '),
       ],
     );
   }
@@ -307,7 +314,7 @@ class SingleTable extends StatelessWidget {
     );
   }
 
-  Container whoLostTextField(TextEditingController losernamefortable) {
+  whoLostTextField(TextEditingController losernamefortable) {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
       width: Get.width,
@@ -318,69 +325,83 @@ class SingleTable extends StatelessWidget {
             hintText: 'wholostgame'.tr,
             border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)))),
-        maxLength: 50,
+        maxLength: 30,
       ),
     );
   }
 
-  Container enterButton(TextEditingController losernamefortable, double price,
+//create payment in single table
+  createpaymentButton(TextEditingController losernamefortable, double price,
       int hour, int minute, bool isopencloseclicked) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       height: Get.height * 0.08,
       width: Get.width * 0.7,
-      child: Expanded(
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            onPressed: () {
-              double calculatedprice =
-                  hour * (price * 1000) + (minute / 60) * (price * 1000);
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+          onPressed: () {
+            var tblcontroller = Get.find<TablesController>();
+            if (tblcontroller.playeroneisselected.value == false &&
+                tblcontroller.playertwoisselected.value == false &&
+                losernamefortable.text.trim().isEmpty) {
+              Get.bottomSheet(Container(
+                height: Get.height * 0.05,
+                margin: const EdgeInsets.only(left: 40, right: 60, bottom: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.redAccent),
+                child: Center(child: Text('selectone'.tr)),
+              ));
+            } else {
+              double calculatedprice = hour * (price) + (minute / 60) * (price);
               int pricetoint = calculatedprice.round();
               Get.find<PaymentsController>().loserpaymoney.add(PaymentsModel(
                   paymentdatetime: DateTime.now().toString(),
                   ispaid: false,
-                  losername: Get.find<TablesController>().wholost.value != ''
-                      ? Get.find<TablesController>().wholost.value
+                  losername: tblcontroller.wholost.value != ''
+                      ? tblcontroller.wholost.value
                       : losernamefortable.text,
                   loserpayprice: '$pricetoint',
                   loserplayedtime: '$hour hour and $minute minute',
-                  tablename: Get.find<TablesController>()
-                      .table[Get.find<TablesController>().index]
-                      .name!));
+                  tablename: tblcontroller.table[tblcontroller.index].name!));
               if (isopencloseclicked) {
-                int indextbl = Get.find<TablesController>().index;
-                var currenttable = Get.find<TablesController>().table[indextbl];
+                int indextbl = tblcontroller.index;
+                var currenttable = tblcontroller.table[indextbl];
                 currenttable.time = DateTime.now().toString();
-                Get.find<TablesController>().table[indextbl] = currenttable;
+                tblcontroller.table[indextbl] = currenttable;
 
+                Get.closeAllSnackbars();
                 Get.back();
                 Get.rawSnackbar(
+                    isDismissible: false,
                     message: 'endgametablemassage'.tr,
                     margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                     duration: const Duration(seconds: 5),
                     snackPosition: SnackPosition.TOP,
                     borderRadius: 20);
 
-                Get.find<TablesController>().stopbuttonenable.value = true;
+                tblcontroller.stopbuttonenable.value = true;
+                tblcontroller.wholost.value = '';
+                losernamefortable.clear();
               } else {
-                Get.find<TablesController>()
-                    .table[Get.find<TablesController>().index]
-                    .time = null;
-                Get.find<TablesController>().startbuttonenable.value = true;
+                tblcontroller.table[tblcontroller.index].time = null;
+                tblcontroller.startbuttonenable.value = true;
 
-                Get.find<TablesController>().stopbuttonenable.value = false;
-                Get.find<TablesController>().closeopenbutton.value = false;
-                Get.find<TablesController>()
-                    .table[Get.find<TablesController>().index]
-                    .time = null;
-                Get.find<TablesController>().wholost.value = '';
-                Get.find<TablesController>()
-                    .table[Get.find<TablesController>().index]
-                    .playerone = 'p1';
-                Get.find<TablesController>()
-                    .table[Get.find<TablesController>().index]
-                    .playertwo = 'p2';
+                tblcontroller.stopbuttonenable.value = false;
+                tblcontroller.closeopenbutton.value = false;
+                tblcontroller.table[tblcontroller.index].time = null;
+                tblcontroller.wholost.value = '';
+                tblcontroller.table[tblcontroller.index].playerone = 'p1';
+                tblcontroller.table[tblcontroller.index].playertwo = 'p2';
+
+                tblcontroller.playeroneisselected.value == false;
+                tblcontroller.playertwoisselected.value == false;
+                losernamefortable.clear();
+                Get.find<Tblsubplayerstxtcntrlr>().playerone!.clear();
+                Get.find<Tblsubplayerstxtcntrlr>().playertwo!.clear();
+                Get.closeAllSnackbars();
                 Get.back();
+
                 Get.rawSnackbar(
                   snackStyle: SnackStyle.FLOATING,
                   messageText: Container(
@@ -394,19 +415,19 @@ class SingleTable extends StatelessWidget {
                   snackPosition: SnackPosition.TOP,
                   borderRadius: 20,
                 );
-                var tblctrl = Get.find<TablesController>();
+                var tblctrl = tblcontroller;
                 tblctrl.startbuttonenable.value = true;
                 tblctrl.stopbuttonenable.value = false;
                 var thistable = tblctrl.table[tblctrl.index];
                 thistable.time = null;
                 tblctrl.table[tblctrl.index] = thistable;
               }
-            },
-            child: Text(
-              'submit'.tr,
-              style: const TextStyle(color: Colors.white),
-            )),
-      ),
+            }
+          },
+          child: Text(
+            'submit'.tr,
+            style: const TextStyle(color: Colors.white),
+          )),
     );
   }
 }
@@ -466,19 +487,26 @@ addplayerbttonsheet(int playernumber, int indextable) {
       children: [
         Container(
             width: Get.width * 0.8,
-            height: Get.height * 0.1,
+            height: Get.height * 0.13,
             padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-            child: TextField(
-              controller: playernumber == 1
-                  ? Get.find<Tblsubplayerstxtcntrlr>().playerone
-                  : Get.find<Tblsubplayerstxtcntrlr>().playertwo,
-              maxLines: 20,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  focusColor: Colors.blueAccent,
-                  hintText: 'playername'.tr),
-            )),
+            child: Obx(() {
+              return TextField(
+                maxLength: 20,
+                controller: playernumber == 1
+                    ? Get.find<Tblsubplayerstxtcntrlr>().playerone
+                    : Get.find<Tblsubplayerstxtcntrlr>().playertwo,
+                maxLines: 20,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    focusColor: Colors.blueAccent,
+                    hintText: 'playername'.tr,
+                    errorText:
+                        Get.find<Tblsubplayerstxtcntrlr>().validateplayers.value
+                            ? 'cantbenull'.tr
+                            : null),
+              );
+            })),
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -492,20 +520,39 @@ addplayerbttonsheet(int playernumber, int indextable) {
             width: Get.width * 0.8,
             child: ElevatedButton(
               onPressed: () {
-                var thistable = Get.find<TablesController>().table[indextable];
-                var playersCtrler = Get.find<Tblsubplayerstxtcntrlr>();
                 if (playernumber == 1) {
-                  thistable.playerone =
-                      playersCtrler.playerone!.text.toString();
-                  Get.find<TablesController>().table[indextable] = thistable;
-                  playersCtrler.playerone!.clear();
-                  Get.back();
-                } else {
-                  thistable.playertwo =
-                      playersCtrler.playertwo!.text.toString();
-                  Get.find<TablesController>().table[indextable] = thistable;
-                  playersCtrler.playertwo!.clear();
-                  Get.back();
+                  Get.find<Tblsubplayerstxtcntrlr>().validateplayers.value =
+                      Get.find<Tblsubplayerstxtcntrlr>()
+                          .playerone!
+                          .text
+                          .trim()
+                          .isEmpty;
+                } else if (playernumber == 2) {
+                  Get.find<Tblsubplayerstxtcntrlr>().validateplayers.value =
+                      Get.find<Tblsubplayerstxtcntrlr>()
+                          .playertwo!
+                          .text
+                          .trim()
+                          .isEmpty;
+                }
+                if (Get.find<Tblsubplayerstxtcntrlr>().validateplayers.value ==
+                    false) {
+                  var thistable =
+                      Get.find<TablesController>().table[indextable];
+                  var playersCtrler = Get.find<Tblsubplayerstxtcntrlr>();
+                  if (playernumber == 1) {
+                    thistable.playerone =
+                        playersCtrler.playerone!.text.toString();
+                    Get.find<TablesController>().table[indextable] = thistable;
+                    playersCtrler.playerone!.clear();
+                    Get.back();
+                  } else {
+                    thistable.playertwo =
+                        playersCtrler.playertwo!.text.toString();
+                    Get.find<TablesController>().table[indextable] = thistable;
+                    playersCtrler.playertwo!.clear();
+                    Get.back();
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -519,32 +566,47 @@ addplayerbttonsheet(int playernumber, int indextable) {
 
 //two next widgets Forplayers select in bottonsheet
 rowChips() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-      chipForRow(
-          Get.find<TablesController>()
-              .table[Get.find<TablesController>().index]
-              .playerone!,
-          Colors.green),
-      chipForRow(
-          Get.find<TablesController>()
-              .table[Get.find<TablesController>().index]
-              .playertwo!,
-          Colors.green),
-    ],
-  );
+  return Obx(() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        chipForRow(
+            Get.find<TablesController>()
+                .table[Get.find<TablesController>().index]
+                .playerone!,
+            Get.find<TablesController>().playeroneisselected.value
+                ? Colors.blue
+                : Colors.white,
+            1),
+        chipForRow(
+            Get.find<TablesController>()
+                .table[Get.find<TablesController>().index]
+                .playertwo!,
+            Get.find<TablesController>().playertwoisselected.value
+                ? Colors.blue
+                : Colors.white,
+            2),
+      ],
+    );
+  });
 }
 
-Widget chipForRow(String label, Color color) {
+Widget chipForRow(String label, Color color, id) {
   return Container(
     margin: const EdgeInsets.all(6.0),
     child: GestureDetector(
       onTap: () {
         Get.find<TablesController>().wholost.value = label;
+        if (id == 1) {
+          Get.find<TablesController>().changeselectedplayer1();
+          Get.find<TablesController>().playertwoisselected.value = false;
+        } else {
+          Get.find<TablesController>().changeselectedplayer2();
+          Get.find<TablesController>().playeroneisselected.value = false;
+        }
       },
       child: Chip(
-        labelPadding: const EdgeInsets.all(5.0),
+        labelPadding: const EdgeInsets.all(10.0),
         avatar: CircleAvatar(
             backgroundColor: const Color.fromARGB(255, 240, 237, 237),
             child: Text(label[0].toUpperCase())),

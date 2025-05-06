@@ -1,4 +1,4 @@
-package com.example.snookerclub
+package com.mohammadddr5.snookerclub
 
 import io.flutter.embedding.android.FlutterActivity
 

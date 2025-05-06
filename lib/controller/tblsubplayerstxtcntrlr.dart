@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class Tblsubplayerstxtcntrlr extends GetxController {
   TextEditingController? playerone;
   TextEditingController? playertwo;
+  var validateplayers = false.obs;
 
   @override
   void onInit() {

@@ -354,30 +354,6 @@ class PaymentsPage extends StatelessWidget {
     }
   }
 
-//convert price to currency price
-  convertpricetocurrency(String price) {
-    var pricereverce = '';
-    int counter = 0;
-    for (var i = price.length; i > 0; i--) {
-      pricereverce += price.substring(i - 1, i);
-      counter++;
-      if (counter == price.length) {
-        break;
-      }
-      if (counter == 3) {
-        pricereverce += ',';
-      } else if (counter == 6) {
-        pricereverce += ',';
-      }
-    }
-
-    var finalreversed = '';
-    for (var i = pricereverce.length; i > 0; i--) {
-      finalreversed += pricereverce.substring(i - 1, i);
-    }
-    return finalreversed;
-  }
-
   paidHistoryCleaner() async {
     var thispayment = Get.find<PaymentsController>();
     var list = Get.find<PaymentsController>().loserpaymoney.toList();
@@ -437,8 +413,7 @@ class PaymentsPage extends StatelessWidget {
                                               onPressed: () {
                                                 Get.back();
                                               },
-                                              child: const Icon(
-                                                  Icons.error_outline),
+                                              child: const Icon(Icons.close),
                                             ),
                                             ElevatedButton(
                                               onPressed: () async {

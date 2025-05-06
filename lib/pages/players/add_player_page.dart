@@ -39,7 +39,7 @@ class AddPlayerPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerNamefieldWidget(),
+              const PlayerNamefieldWidget(),
               const PlayerNumberTextfieldWidget(),
               Obx(() => Container(
                   margin: const EdgeInsets.only(bottom: 15),
@@ -236,6 +236,7 @@ class PlayerNamefieldWidget extends StatelessWidget {
         width: Get.width,
         child: Obx(() {
           return TextField(
+            maxLength: 20,
             onChanged: (value) {
               Get.find<AddPlayertextcontroller>().isplayernameempty.value =
                   false;
