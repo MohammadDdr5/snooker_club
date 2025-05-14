@@ -275,7 +275,8 @@ deleteTableAllert(int index, BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: Text('areyousuredelete'.tr)),
+                      Expanded(
+                          child: Center(child: Text('areyousuredelete'.tr))),
                     ],
                   ),
                   Row(
