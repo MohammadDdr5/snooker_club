@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_interpolation_to_compose_strings, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -184,12 +184,69 @@ class AddPlayerPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     )),
-              )
+              ),
+              const PrivacyWidget(),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class PrivacyWidget extends StatelessWidget {
+  const PrivacyWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text('privacy'.tr),
+                        const SizedBox(
+                          height: 60,
+                          width: 60,
+                          child: FittedBox(
+                            child: Icon(
+                              Icons.privacy_tip,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    content: Container(
+                      width: Get.width * 0.9,
+                      height: Get.height * 0.4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                'privacytext'.tr,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              )),
+                            ],
+                          ),
+                          ElevatedButton(
+                              onPressed: () => Get.back(),
+                              child: Text('undrestand'.tr))
+                        ],
+                      ),
+                    ),
+                  ));
+        },
+        child: Text('privacy'.tr));
   }
 }
 

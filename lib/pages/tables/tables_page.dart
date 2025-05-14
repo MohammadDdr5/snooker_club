@@ -79,16 +79,22 @@ class TablesPage extends StatelessWidget {
                               motion: const ScrollMotion(),
 
                               // A pane can dismiss the Slidable.
-                              dismissible: DismissiblePane(onDismissed: () {
-                                tableDelete(index);
-                              }),
 
                               // All actions are defined in the children parameter.
                               children: [
                                 // A SlidableAction can have an icon and/or a label.
                                 Container(
                                   child: SlidableAction(
-                                    onPressed: (_) => {tableDelete(index)},
+                                    onPressed: (_) {
+                                      if (Get.find<TablesController>()
+                                              .table[index]
+                                              .status ==
+                                          true) {
+                                        deleteTableAllert(index, context);
+                                      } else {
+                                        tableDelete(index);
+                                      }
+                                    },
                                     backgroundColor: const Color(0xFFFE4A49),
                                     foregroundColor: Colors.white,
                                     icon: Icons.delete,
@@ -241,4 +247,71 @@ void tableDelete(int index) {
   Get.find<TablesController>()
       .table
       .remove(Get.find<TablesController>().table[index]);
+}
+
+deleteTableAllert(int index, BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('warning'.tr),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.amber,
+                )
+              ],
+            ),
+            content: Container(
+              width: Get.width * 0.9,
+              height: Get.height * 0.15,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: Text('areyousuredelete'.tr)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: FittedBox(
+                          child: IconButton(
+                              onPressed: () {
+                                tableDelete(index);
+                                Get.back();
+                              },
+                              icon:
+                                  const Icon(Icons.check, color: Colors.green)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: FittedBox(
+                          child: IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Colors.red,
+                              )),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
 }

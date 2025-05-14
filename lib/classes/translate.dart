@@ -60,6 +60,12 @@ class Translate extends Translations {
               'Are You Sure About to Remove All Payments List !!? This Action Cant be Undo !!!!',
           'selectone': 'Please Select Loser',
           'moneycurrency': 'Dollar(s)',
+          'warning': 'warning',
+          'areyousuredelete': 'Are You Sure To Delete This Table ??',
+          'privacy': 'Privacy Policy',
+          'privacytext':
+              'Dear user! The information received from your customers is for your use in the program and will not be used in any way on any social networks or the internet.',
+          'undrestand': 'Undrestand',
         },
         'fa': {
           'home': 'خانه',
@@ -117,6 +123,12 @@ class Translate extends Translations {
               'آیا از حذف لیست تمامی پرداختی ها مطمِن هستید !!؟؟ پس از حذف اطلاعات قابل بازگشت نیستند !!',
           'selectone': 'لطفا بازنده را مشخص کنید',
           'moneycurrency': 'تومان',
+          'warning': 'هشدار',
+          'areyousuredelete': 'از حذف این میز مطمئن هستید؟؟',
+          'privacy': 'حریم خصوصی',
+          'privacytext':
+              'کاربر گرامی!!! اطاعات دریافتی مشتریان شما جهت استفاده شما در برنامه می باشد، در هیچکدام یک از شبکه های اجتماعی و اینترنت هیچگونه استفاده ای نخواهد شد.    ',
+          'undrestand': 'فهمیدم',
         }
       };
 }

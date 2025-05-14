@@ -1,16 +1,13 @@
-// ignore_for_file: await_only_futures, avoid_unnecessary_containers, unused_catch_clause
+// ignore_for_file: await_only_futures, avoid_unnecessary_containers, unused_catch_clause, sized_box_for_whitespace
 
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:snookerclub/classes/myconsts.dart';
-
 import 'package:snookerclub/controller/news_controller.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:snookerclub/controller/themeandlang_controller.dart';
@@ -39,85 +36,106 @@ class NewsPage extends StatelessWidget {
           ),
         ),
         body: Obx(() {
-          return Tooltip(
-            message: 'For Update News Page Roll Down',
-            child: RefreshIndicator(
-                child: Get.find<NewsController>().isDone.value
-                    ? bodyreturn()
-                    : shimmerinterface(),
-                onRefresh: () async {
-                  dataloading();
-                }),
-          );
+          return RefreshIndicator(
+              child: Get.find<NewsController>().firstloading(),
+              onRefresh: () async {
+                dataloading();
+              });
         }));
   }
 }
 
+//body
+errorconnectionbody() {
+  return Container(
+    width: Get.width,
+    height: Get.height * 0.25,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Error Connection'),
+            Icon(Icons.wifi_off_outlined),
+          ],
+        ),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.refresh_rounded))
+      ],
+    ),
+  );
+}
+
 //
 bodyreturn() {
-  return Container(
-      child: ListView.separated(
-    separatorBuilder: (context, index) => const Divider(),
-    itemBuilder: (contex, index) {
-      return Container(
-        padding: const EdgeInsets.all(1),
-        child: ListTile(
-          subtitle: Text(Get.find<NewsController>().news[index].date!),
-          onTap: () {
-            webviewwidget(Get.find<NewsController>().news[index].url!);
-          },
-          onLongPress: () async {
-            showDialog(
-              context: contex,
-              builder: (contex) {
-                return Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      _launchURL(Uri.parse(
-                          Get.find<NewsController>().news[index].url!));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: myAppbarColor,
-                      ),
-                      width: Get.width * 0.6,
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('openinchrome'.tr),
-                          const Icon(Icons.web)
-                        ],
+  if (Get.find<NewsController>().isDone.value) {
+    return Container(
+        child: ListView.separated(
+      separatorBuilder: (context, index) => const Divider(),
+      itemBuilder: (contex, index) {
+        return Container(
+          padding: const EdgeInsets.all(1),
+          child: ListTile(
+            subtitle: Text(Get.find<NewsController>().news[index].date!),
+            onTap: () {
+              webviewwidget(Get.find<NewsController>().news[index].url!);
+            },
+            onLongPress: () async {
+              showDialog(
+                context: contex,
+                builder: (contex) {
+                  return Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _launchURL(Uri.parse(
+                            Get.find<NewsController>().news[index].url!));
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: myAppbarColor,
+                        ),
+                        width: Get.width * 0.6,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('openinchrome'.tr),
+                            const Icon(Icons.web)
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-          title: Text(Get.find<NewsController>().news[index].title!),
-          leading: SizedBox(
-            child: CachedNetworkImage(
-              imageUrl: Get.find<NewsController>().news[index].urlimage!,
-              fit: BoxFit.fitHeight,
-              placeholder: (context, url) => const CircularProgressIndicator(),
+                  );
+                },
+              );
+            },
+            title: Text(Get.find<NewsController>().news[index].title!),
+            leading: SizedBox(
+              child: CachedNetworkImage(
+                imageUrl: Get.find<NewsController>().news[index].urlimage!,
+                fit: BoxFit.fitHeight,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+              ),
             ),
           ),
-        ),
-      );
-    },
-    itemCount: Get.find<NewsController>().news.length,
-  ));
+        );
+      },
+      itemCount: Get.find<NewsController>().news.length,
+    ));
+  } else {
+    return shimmerinterface();
+  }
 }
 
 //dataloading
 dataloading() async {
   bool connection = await _checknetconnection();
-
+  Get.closeAllSnackbars();
   if (connection) {
-    getwebsitedata().then((_) {
+    await getwebsitedata().then((_) {
       Get.rawSnackbar(
           padding: const EdgeInsets.all(20),
           margin: const EdgeInsets.only(top: 30, left: 100, right: 100),
@@ -186,7 +204,7 @@ Future getwebsitedata() async {
             urlimage: urlimage[i],
             date: date[i]));
       }
-      Get.find<NewsController>().changeisdone();
+      Get.find<NewsController>().isDone.value = true;
     }
   } catch (e) {
     e.printError();
@@ -197,74 +215,78 @@ Future getwebsitedata() async {
 //get news bodytesite from the site
 
 shimmerinterface() {
-  return ListView.separated(
-      itemBuilder: (context, index) {
-        int delay = (index * 300);
-        return Container(
-          margin:
-              const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-          width: Get.width * 0.8,
-          height: Get.height * 0.1,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FadeShimmer(
-                    radius: 15,
-                    width: Get.width * 0.3,
-                    height: Get.height * 0.1,
-                    fadeTheme:
-                        Get.find<ThemeandlangController>().isthemedark.value
-                            ? FadeTheme.dark
-                            : FadeTheme.light,
-                    millisecondsDelay: delay,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FadeShimmer(
-                        radius: 15,
-                        width: Get.width * 0.55,
-                        height: Get.height * 0.055,
-                        fadeTheme:
-                            Get.find<ThemeandlangController>().isthemedark.value
-                                ? FadeTheme.dark
-                                : FadeTheme.light,
-                        millisecondsDelay: delay,
-                      ),
-                      const SizedBox(height: 10, width: 10),
-                      FadeShimmer(
-                        radius: 10,
-                        width: Get.width * 0.1,
-                        height: Get.height * 0.01,
-                        fadeTheme:
-                            Get.find<ThemeandlangController>().isthemedark.value
-                                ? FadeTheme.dark
-                                : FadeTheme.light,
-                        millisecondsDelay: delay,
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const Divider();
-      },
-      itemCount: 6);
+  return Container(
+    child: ListView.separated(
+        itemBuilder: (context, index) {
+          int delay = (index * 300);
+          return Container(
+            margin:
+                const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+            width: Get.width * 0.8,
+            height: Get.height * 0.1,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FadeShimmer(
+                      radius: 15,
+                      width: Get.width * 0.3,
+                      height: Get.height * 0.1,
+                      fadeTheme:
+                          Get.find<ThemeandlangController>().isthemedark.value
+                              ? FadeTheme.dark
+                              : FadeTheme.light,
+                      millisecondsDelay: delay,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        FadeShimmer(
+                          radius: 15,
+                          width: Get.width * 0.55,
+                          height: Get.height * 0.055,
+                          fadeTheme: Get.find<ThemeandlangController>()
+                                  .isthemedark
+                                  .value
+                              ? FadeTheme.dark
+                              : FadeTheme.light,
+                          millisecondsDelay: delay,
+                        ),
+                        const SizedBox(height: 10, width: 10),
+                        FadeShimmer(
+                          radius: 10,
+                          width: Get.width * 0.1,
+                          height: Get.height * 0.01,
+                          fadeTheme: Get.find<ThemeandlangController>()
+                                  .isthemedark
+                                  .value
+                              ? FadeTheme.dark
+                              : FadeTheme.light,
+                          millisecondsDelay: delay,
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider();
+        },
+        itemCount: 6),
+  );
 }
 
 Future<bool> _checknetconnection() async {
-  int timeout = 3;
+  int timeout = 5;
   try {
     http.Response response = await http
         .get(Uri.parse('https://www.google.com'))

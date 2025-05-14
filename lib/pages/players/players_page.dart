@@ -39,7 +39,7 @@ class PlayersPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: Get.width * 0.24,
+                      width: Get.width * 0.18,
                       child: Text('playerphonenumber'.tr,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
@@ -136,8 +136,7 @@ class TableListView extends StatelessWidget {
                     // component is not dragged.
                     child: InkWell(
                       child: Container(
-                        padding: const EdgeInsets.only(
-                            top: 15, left: 10, right: 10, bottom: 10),
+                        padding: const EdgeInsets.all(10),
                         width: Get.width,
                         height: 80,
                         child: Row(
@@ -163,7 +162,7 @@ class TableListView extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              width: Get.width * 0.24,
+                              width: Get.width * 0.30,
                               child: Text(Get.find<PlayersController>()
                                   .players[index]
                                   .mobilenumber!),
