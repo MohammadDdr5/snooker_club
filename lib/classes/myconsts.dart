@@ -145,3 +145,38 @@ convertpricetocurrency(String price) {
   }
   return finalreversed;
 }
+
+myCustomSnackbarIcon(String message, Icon icon) {
+  Get.rawSnackbar(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(top: 30, left: 100, right: 100),
+      snackPosition: SnackPosition.TOP,
+      borderRadius: 20,
+      backgroundColor: Get.find<ThemeandlangController>().isthemedark.value
+          ? Colors.black
+          : Colors.white,
+      messageText: Text(
+        message.tr,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      ),
+      icon: icon,
+      isDismissible: false);
+}
+
+myCustomSnackbarNoIcon(String message) {
+  Get.rawSnackbar(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(top: 30, left: 100, right: 100),
+      snackPosition: SnackPosition.TOP,
+      borderRadius: 20,
+      backgroundColor: Get.find<ThemeandlangController>().isthemedark.value
+          ? Colors.black
+          : Colors.white,
+      messageText: Center(
+        child: Text(
+          message,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+      ),
+      isDismissible: false);
+}

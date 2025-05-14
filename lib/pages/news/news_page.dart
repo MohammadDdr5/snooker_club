@@ -136,31 +136,11 @@ dataloading() async {
   Get.closeAllSnackbars();
   if (connection) {
     await getwebsitedata().then((_) {
-      Get.rawSnackbar(
-          padding: const EdgeInsets.all(20),
-          margin: const EdgeInsets.only(top: 30, left: 100, right: 100),
-          snackPosition: SnackPosition.TOP,
-          borderRadius: 20,
-          backgroundColor: Get.find<ThemeandlangController>().isthemedark.value
-              ? Colors.black
-              : Colors.white,
-          messageText: Center(child: Text('newslistupdate'.tr)));
+      myCustomSnackbarNoIcon('newslistupdate'.tr);
     });
   } else {
-    Get.rawSnackbar(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.only(top: 30, left: 100, right: 100),
-        snackPosition: SnackPosition.TOP,
-        borderRadius: 20,
-        backgroundColor: Get.find<ThemeandlangController>().isthemedark.value
-            ? Colors.black
-            : Colors.white,
-        messageText: Text(
-          'connectionlost'.tr,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        icon: const Icon(Icons.wifi_off_rounded),
-        isDismissible: false);
+    myCustomSnackbarIcon(
+        'connectionlost'.tr, const Icon(Icons.wifi_off_rounded));
   }
 }
 

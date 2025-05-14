@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:snookerclub/classes/myconsts.dart';
 import 'package:snookerclub/controller/table_textcontroller.dart';
 import 'package:snookerclub/controller/tables_controller.dart';
 import 'package:snookerclub/models/tables_model.dart';
@@ -65,14 +66,7 @@ class AddTablePage extends StatelessWidget {
                       Get.find<TableTextcontroller>().tablename!.clear();
                       Get.find<TableTextcontroller>().tableprice!.clear();
                       Get.back();
-                      Get.rawSnackbar(
-                          borderRadius: 15,
-                          messageText: Text('tableadedsuccfullyess'.tr),
-                          snackPosition: SnackPosition.TOP,
-                          margin: const EdgeInsets.only(
-                              top: 20, left: 20, right: 20),
-                          duration: const Duration(seconds: 5),
-                          backgroundColor: Colors.green.shade200);
+                      myCustomSnackbarNoIcon('tableadedsuccfullyess'.tr);
                     } else {
                       int indextble = Get.find<TablesController>().index;
 
@@ -88,15 +82,7 @@ class AddTablePage extends StatelessWidget {
                       Get.find<TableTextcontroller>().tablename!.clear();
                       Get.find<TableTextcontroller>().tableprice!.clear();
                       Get.back();
-                      Get.rawSnackbar(
-                          snackPosition: SnackPosition.TOP,
-                          borderRadius: 15,
-                          messageText: Text(currenttable.name.toString() +
-                              'tableeditedsuccfullyess'.tr),
-                          margin: const EdgeInsets.only(
-                              top: 20, left: 20, right: 20),
-                          duration: const Duration(seconds: 5),
-                          backgroundColor: Colors.green.shade200);
+                      myCustomSnackbarNoIcon('tableeditedsuccfullyess'.tr);
                     }
                   }
                 },

@@ -372,13 +372,7 @@ class SingleTable extends StatelessWidget {
 
                 Get.closeAllSnackbars();
                 Get.back();
-                Get.rawSnackbar(
-                    isDismissible: false,
-                    message: 'endgametablemassage'.tr,
-                    margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    duration: const Duration(seconds: 5),
-                    snackPosition: SnackPosition.TOP,
-                    borderRadius: 20);
+                myCustomSnackbarNoIcon('endgametablemassage'.tr);
 
                 tblcontroller.stopbuttonenable.value = true;
                 tblcontroller.wholost.value = '';
@@ -402,19 +396,7 @@ class SingleTable extends StatelessWidget {
                 Get.closeAllSnackbars();
                 Get.back();
 
-                Get.rawSnackbar(
-                  snackStyle: SnackStyle.FLOATING,
-                  messageText: Container(
-                      padding: const EdgeInsets.only(left: 100, right: 100),
-                      child: Text(
-                        'endgametablemassage'.tr,
-                        style: const TextStyle(color: Colors.white),
-                      )),
-                  margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                  duration: const Duration(seconds: 5),
-                  snackPosition: SnackPosition.TOP,
-                  borderRadius: 20,
-                );
+                myCustomSnackbarNoIcon('endgametablemassage'.tr);
                 var tblctrl = tblcontroller;
                 tblctrl.startbuttonenable.value = true;
                 tblctrl.stopbuttonenable.value = false;

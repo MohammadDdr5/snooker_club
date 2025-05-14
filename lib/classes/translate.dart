@@ -78,7 +78,7 @@ class Translate extends Translations {
           'playerphonenumber': ' شماره تلفن',
           'addplayer': 'افزودن بازیکن',
           'editplayer': 'ویرایش بازیکن',
-          'playeredited': 'بازیکن با موفقیت ویرایش شد',
+          'playeredited': 'با موفقیت ویرایش شد',
           'group': 'گروه',
           'addtable': 'افزودن میز',
           'edittable': 'ویرایش میز',

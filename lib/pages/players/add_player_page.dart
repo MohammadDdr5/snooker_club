@@ -112,21 +112,9 @@ class AddPlayerPage extends StatelessWidget {
                                       .selected
                                       .value));
 
-                          Get.rawSnackbar(
-                              snackPosition: SnackPosition.TOP,
-                              messageText: Text(
-                                ' ${Get.find<AddPlayertextcontroller>().playername!.text} ' +
-                                    'playeraddedtolist'.tr,
-                              ),
-                              borderRadius: 10,
-                              barBlur: 60,
-                              margin: const EdgeInsets.only(
-                                  top: 10, left: 5, right: 5),
-                              duration: const Duration(seconds: 5),
-                              borderColor:
-                                  const Color.fromARGB(137, 121, 117, 117),
-                              borderWidth: 1.5,
-                              backgroundColor: Colors.white60);
+                          myCustomSnackbarNoIcon(
+                              ' ${Get.find<AddPlayertextcontroller>().playername!.text} ' +
+                                  'playeraddedtolist'.tr);
 
                           Get.find<AddPlayertextcontroller>().playername!.text =
                               '';
@@ -150,20 +138,9 @@ class AddPlayerPage extends StatelessWidget {
                                   Get.find<PlayersController>().index] =
                               currentplayer;
                           Get.back();
-                          Get.rawSnackbar(
-                              snackPosition: SnackPosition.TOP,
-                              messageText: Text(
-                                '${Get.find<AddPlayertextcontroller>().playername!.text} ' +
-                                    "playeredited".tr,
-                              ),
-                              barBlur: 60,
-                              margin: const EdgeInsets.only(
-                                  top: 10, left: 5, right: 5),
-                              duration: const Duration(seconds: 5),
-                              borderColor:
-                                  const Color.fromARGB(137, 121, 117, 117),
-                              borderWidth: 1.5,
-                              backgroundColor: Colors.white60);
+                          myCustomSnackbarNoIcon(
+                              '${Get.find<AddPlayertextcontroller>().playername!.text} ' +
+                                  "playeredited".tr);
 
                           Get.find<AddPlayertextcontroller>()
                               .playername!
